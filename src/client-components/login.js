@@ -1,6 +1,9 @@
 import React from 'react';
 
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+
+import IP from '../IP';
 import axios from 'axios';
 //==================================================== 
 class Login extends React.Component {
@@ -9,9 +12,8 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
-      wrongEmailOrPass: '', 
+      wrongEmailOrPass: false, 
     }
-    this.submitLogin = this.submitLogin.bind(this);
   }
   // //==================================================== NavBar component
   //   static navigationOptions = {
@@ -26,7 +28,7 @@ class Login extends React.Component {
   //====================================================
   submitLogin() {
     if (this.state.email.length) {
-      axios.post(`/api/login`, {
+      axios.post(`http://${IP}/api/login`, {
         email: this.state.email,
         password: this.state.password,
       }).then(results => {
@@ -44,32 +46,46 @@ class Login extends React.Component {
       });
     }
   }
+
+  updateEmail(e) {
+    this.setState({
+      email: e.target.value,
+      wrongEmailOrPass: false,
+    });
+  }
+
+  updatePassword(e) {
+    this.setState({
+      password: e.target.value,
+      wrongEmailOrPass: false,
+    });
+  }
+
   //====================================================
   render() {
     return (
       <div>
         <p>Log in to your CookBook account:</p>
-        <input
+        <TextField
           style={{ height: 40, width: 250 }}
           placeholder='Email'
-          onChangeText={text => this.setState({
-            email: text,
-            wrongEmailOrPass: false,
-          })}
+          onChange={this.updateEmail.bind(this)}
           />
         {this.state.wrongEmailOrPass
-          ? <p>Wrong email or password.</p>
+          ? (<p>Wrong email or password.</p>)
           : (null)}
-        <input
+        <TextField
           style={{ height: 40, width: 250 }}
+          type='password'
           placeholder='Password'
           secureTextEntry={true}
-          onChangeText={text => this.setState({
-            password: text,
-            wrongEmailOrPass: false,
-          })}
+          onChange={this.updatePassword.bind(this)}
         />
-        <Button variant='contained' color='primary'>
+        <Button 
+          variant='contained' 
+          color='primary'
+          size='small'
+          onClick={this.submitLogin.bind(this)}>
         Log In 
         </Button>
         <p>
@@ -82,7 +98,10 @@ class Login extends React.Component {
           }}
           color='#ff0000'
         /> */}
-         <Button variant='contained' color='#ff0000'>
+        <Button 
+          variant='contained' 
+          color='secondary'
+          size='small'>
         Sign Up
         </Button>
       </div>

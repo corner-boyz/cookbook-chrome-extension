@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button,
-  FlatList,
-} from 'react-native';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 import axios from 'axios';
 import IP from '../IP';
@@ -27,7 +20,7 @@ class Signup extends React.Component {
         notMatching: false,
         tooShort: false,
     }
-
+    //this.submitSignup = this.submitSignup.bind(this);
 }
 //==================================================== NavBar component
   // static navigationOptions = {
@@ -59,76 +52,101 @@ class Signup extends React.Component {
           });
     }
   }
+
+  updateName(e) {
+    this.setState({
+      name: e.target.value,
+    });
+  }
+
+  updateEmail(e) {
+    this.setState({
+      email: e.target.value,
+      noEmail: false,
+    });
+  }
+
+  updatePassword(e) {
+    this.setState({
+      password: e.target.value,
+      tooShort: false,
+    });
+  }
+
+  updateConfirmedPassword(e) {
+    this.setState({
+      confirmedPassword: e.target.value,
+      notMatching: false,
+    });
+  }
 //====================================================
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Sign up for CookBook:</Text>
-        <TextInput
+      <div>
+        <p>Sign up for CookBook:</p>
+        <TextField
           style={{ height: 40, width: 250 }}
           placeholder='Name'
-          onChangeText={text => this.setState({
-              name: text
-          })}
+          inputStyle={styles.textField}
+          onChange={this.updateName.bind(this)}
         />
         {this.state.noEmail ? 
-        <Text style={styles.warningText}>Please enter a valid email address.</Text>
+        <p>Please enter a valid email address.</p>
         : (null)}
-        <TextInput
+        <TextField
           style={{ height: 40, width: 250 }}
           placeholder='Email'
-          onChangeText={text => this.setState({
-            email: text
-          })}
+          inputStyle={styles.textField}
+          onChange={this.updateEmail.bind(this)}
         />
         {this.state.tooShort ? 
-        <Text style={styles.warningText}>Password must be at least 6 characters.</Text>
+        <p>Password must be at least 6 characters.</p>
         : (null)}
-        <TextInput
+        <TextField
           style={{ height: 40, width: 250 }}
           placeholder='Password'
-          secureTextEntry={true}
-          onChangeText={text => this.setState({
-            password: text
-          })}
+          type='password'
+          inputStyle={styles.textField}
+          onChange={this.updatePassword.bind(this)}
         />
         {this.state.notMatching ? 
-        <Text style={styles.warningText}>Passwords do not match.</Text>
+        <p>Passwords do not match.</p>
         : (null)}
-        <TextInput
+        <TextField
           style={{ height: 40, width: 250 }}
           placeholder='Confirm Password'
-          secureTextEntry={true}
-          onChangeText={text => this.setState({
-            confirmedPassword: text
-          })}
+          type='password'
+          inputStyle={styles.textField}
+          onChange={this.updateConfirmedPassword.bind(this)}
         />
         <Button
-          title="Sign Up"
-          onPress={() => {
-            this.submitSignup();
+          onClick={this.submitSignup.bind(this)}
+          variant='contained' 
+          color='primary'
+          size='small'
+        > 
+        Sign Up 
+        </Button>
+        <p>Already have an account?</p>
+        <Button
+          onClick={() => {
+            // this.props.screenProps.switchToLogin();
           }}
-        />
-      </View>
+          variant='contained' 
+          color='secondary'
+          size='small'
+        > 
+        Go Back 
+        </Button>
+      </div>
     )
   }
 }
+const styles = {
+    textField: {
+    fontSize: 10, 
+ }
+}
 //==================================================== 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  list: {
-    width: 350,
-    backgroundColor: 'white'
-    // justifyContent: 'center',
-  },
-  warningText: {
-      color: '#ff0000'
-  }
-});
 
 export default Signup;
