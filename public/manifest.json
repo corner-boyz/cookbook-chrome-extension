@@ -1,0 +1,10 @@
+{
+  "short_name": "Cook Book",
+  "name": "Cook Book Chrome Extension",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_popup": "index.html",
+    "default_title": "React Ext"
+  },
+  "version": "1.0.0"
+}
