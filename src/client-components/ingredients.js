@@ -1,3 +1,5 @@
+/* global chrome */
+
 import React from 'react';
 
 import Button from '@material-ui/core/Button';
@@ -15,6 +17,15 @@ class Ingredients extends React.Component {
   }
   //====================================================
   componentDidMount() {
+  }
+
+  logOut() {
+    chrome.storage.sync.set({
+      'isLoggedIn': false,
+      'email': null,
+      'name': null
+    });
+    this.props.changeScreen('login');
   }
 
   submitIngredient() {
@@ -62,11 +73,17 @@ class Ingredients extends React.Component {
           variant='contained' 
           color='primary'
           size='small'
-          onPress={() => {
-            this.submitIngredient();
-          }}
+          onClick={this.submitIngredient}
         >
         Submit
+        </Button>
+        <Button
+          variant='contained' 
+          color='secondary'
+          size='small'
+          onClick={this.logOut}
+        >
+        Log Out
         </Button>
       </div>
     )
