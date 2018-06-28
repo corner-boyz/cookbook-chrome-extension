@@ -1,11 +1,10 @@
+/* global chrome */
+
 import React, { Component } from 'react';
 import Home from './client-components/home';
 import Login from './client-components/login';
 import Signup from './client-components/signup';
 import Ingredients from './client-components/ingredients';
-
-import IP from './IP';
-import axios from 'axios';
 
 class App extends Component {
   constructor(props) {
@@ -18,15 +17,12 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://${IP}/api/checkLogin`).then(results => {
-      const { isLoggedIn, email, name } = results.data;
+    chrome.storage.sync.get(['isLoggenIn'], (isLoggedIn) => {
       if (isLoggedIn) {
         this.setState({
           screen: 'ingredients',
         });
       } 
-    }).catch(error => {
-      console.log('Error in checking user login:', error);
     });
   }
 
@@ -42,16 +38,6 @@ class App extends Component {
       case 'ingredients': return <Ingredients changeScreen={this.changeScreen}/>;
       default: return <Login changeScreen={this.changeScreen}/>;
     }
-  //   return (
-  //     // <div className="App">
-  //     //   <header className="App-header">
-  //     //     <h1 className="App-title">Welcome to CookBook</h1>
-  //     //   </header>
-  //     //   <p className="App-intro">
-  //     //     Welcome to your CookBook account.
-  //     //   </p>
-  //     // </div>
-  //   );
   }
 }
 
