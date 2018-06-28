@@ -50,7 +50,7 @@ class Signup extends React.Component {
             name: this.state.name,
           })
           .then(() => {
-            //Redirect to home page
+            this.redirectToLogin();
           }).catch(error => {
             console.log('Error in creating new user:', error);
           });
@@ -91,36 +91,36 @@ class Signup extends React.Component {
         <TextField
           style={{ height: 40, width: 250 }}
           placeholder='Name'
-          inputStyle={styles.textField}
+          inputProps={{style: styles.textField}}
           onChange={this.updateName.bind(this)}
         />
         {this.state.noEmail ? 
-        <p>Please enter a valid email address.</p>
+        <p style={styles.warningText}>Please enter a valid email address.</p>
         : (null)}
         <TextField
           style={{ height: 40, width: 250 }}
           placeholder='Email'
-          inputStyle={styles.textField}
+          inputProps={{style: styles.textField}}
           onChange={this.updateEmail.bind(this)}
         />
         {this.state.tooShort ? 
-        <p>Password must be at least 6 characters.</p>
+        <p style={styles.warningText}>Password must be at least 6 characters.</p>
         : (null)}
         <TextField
           style={{ height: 40, width: 250 }}
           placeholder='Password'
           type='password'
-          inputStyle={styles.textField}
+          inputProps={{style: styles.textField}}
           onChange={this.updatePassword.bind(this)}
         />
         {this.state.notMatching ? 
-        <p>Passwords do not match.</p>
+        <p style={styles.warningText}>Passwords do not match.</p>
         : (null)}
         <TextField
           style={{ height: 40, width: 250 }}
           placeholder='Confirm Password'
           type='password'
-          inputStyle={styles.textField}
+          inputProps={{style: styles.textField}}
           onChange={this.updateConfirmedPassword.bind(this)}
         />
         <Button
@@ -145,9 +145,12 @@ class Signup extends React.Component {
   }
 }
 const styles = {
-    textField: {
-    fontSize: 8, 
- }
+  textField: {
+    fontSize: 12, 
+  },
+  warningText: {
+    color: '#ff0000'
+  }
 }
 //==================================================== 
 

@@ -1,17 +1,9 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button,
-  FlatList,
-} from 'react-native';
 
-import { List, ListItem } from 'react-native-elements';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
-//==================================================== 'index' state is required for refreshing the ingredient's list; <FlatList /> is a pure component so it will not auto refresh normally
+//==================================================== 'index' state is required for refreshing the ingredient's list;
 class Ingredients extends React.Component {
   constructor(props) {
     super(props);
@@ -21,23 +13,11 @@ class Ingredients extends React.Component {
     }
 
   }
-  //==================================================== NavBar component
-  static navigationOptions = {
-    tabBarColor: 'green',
-    tabBarIcon: () => {
-      return <Ionicons name='ios-basket' size={25} color='white' />;
-    },
-  }
   //====================================================
   componentDidMount() {
-    setTimeout(() => {
-      this.props.navigation.actions.goBack();
-    }, 2000)
-
   }
 
   submitIngredient() {
-    // console.log('Submitting new Ingredient...')
     let newIngredient = {
       name: this.props.screenProps.text,
       quantity: 99
@@ -50,12 +30,12 @@ class Ingredients extends React.Component {
   //====================================================
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Here are your Ingredients:</Text>
+      <div style={styles.container}>
+        <p>Here are your Ingredients:</p>
         {/* <List
           // style={styles.list}
         > */}
-        <FlatList
+        {/* <FlatList
           style={styles.list}
           data={this.props.screenProps.ingredients}
           extraData={this.state.index}
@@ -71,25 +51,29 @@ class Ingredients extends React.Component {
               </View>
           }
           keyExtractor={(item, index) => item.ingredient}
-        />
+        /> */}
         {/* </List> */}
-        <TextInput
+        <TextField
           style={{ height: 40, width: 250 }}
           placeholder='Add an Ingredient'
-          onChangeText={(text) => this.props.screenProps.text = text}
+          onChange={(text) => this.props.screenProps.text = text}
         />
         <Button
-          title="submit"
+          variant='contained' 
+          color='primary'
+          size='small'
           onPress={() => {
             this.submitIngredient();
           }}
-        />
-      </View>
+        >
+        Submit
+        </Button>
+      </div>
     )
   }
 }
 //==================================================== 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
@@ -101,6 +85,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
     // justifyContent: 'center',
   }
-});
+};
 
 export default Ingredients;
