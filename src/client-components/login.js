@@ -43,6 +43,7 @@ class Login extends React.Component {
         } else {
           let { email, name } = results.data;
           // Do something with this data
+          this.props.changeScreen('ingredients');
         }
       }).catch(error => {
         console.log('Error in validating user login:', error);
@@ -73,9 +74,10 @@ class Login extends React.Component {
           style={{ height: 40, width: 250 }}
           placeholder='Email'
           onChange={this.updateEmail.bind(this)}
+          inputProps={{style: styles.textField}}
           />
         {this.state.wrongEmailOrPass
-          ? (<p>Wrong email or password.</p>)
+          ? (<p style={styles.warningText}>Wrong email or password.</p>)
           : (null)}
         <TextField
           style={{ height: 40, width: 250 }}
@@ -83,6 +85,7 @@ class Login extends React.Component {
           placeholder='Password'
           secureTextEntry={true}
           onChange={this.updatePassword.bind(this)}
+          inputProps={{style: styles.textField}}
         />
         <Button 
           variant='contained' 
@@ -114,6 +117,15 @@ class Login extends React.Component {
   }
 }
 //==================================================== 
+const styles = {
+  textField:{
+    fontSize: 12
+  },
+  warningText: {
+    color: '#ff0000'
+  }
+}
+
 // const styles = StyleSheet.create({
 //   container: {
 //     flex: 1,
