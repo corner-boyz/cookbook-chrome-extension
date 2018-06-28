@@ -26,6 +26,10 @@ class Login extends React.Component {
   componentDidMount() {
   }
   //====================================================
+  redirectToSignup(){
+    this.props.changeScreen('signup');
+  }
+  
   submitLogin() {
     if (this.state.email.length) {
       axios.post(`http://${IP}/api/login`, {
@@ -39,7 +43,6 @@ class Login extends React.Component {
         } else {
           let { email, name } = results.data;
           // Do something with this data
-          this.props.screenProps.logIn();
         }
       }).catch(error => {
         console.log('Error in validating user login:', error);
@@ -101,7 +104,9 @@ class Login extends React.Component {
         <Button 
           variant='contained' 
           color='secondary'
-          size='small'>
+          size='small'
+          onClick={this.redirectToSignup.bind(this)}
+          >
         Sign Up
         </Button>
       </div>
