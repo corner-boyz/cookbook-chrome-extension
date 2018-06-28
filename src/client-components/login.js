@@ -1,3 +1,5 @@
+/* global chrome */
+
 import React from 'react';
 
 import Button from '@material-ui/core/Button';
@@ -15,13 +17,6 @@ class Login extends React.Component {
       wrongEmailOrPass: false, 
     }
   }
-  // //==================================================== NavBar component
-  //   static navigationOptions = {
-  //     tabBarColor: 'green',
-  //     tabBarIcon: () => {
-  //       return <Ionicons name='ios-basket' size={25} color='white' />;
-  //     },
-  //   }
   //====================================================
   componentDidMount() {
   }
@@ -42,7 +37,11 @@ class Login extends React.Component {
           });
         } else {
           let { email, name } = results.data;
-          // Do something with this data
+          chrome.storage.sync.set({
+            'isLoggedIn': true,
+            'email': email,
+            'name': name
+          });
           this.props.changeScreen('ingredients');
         }
       }).catch(error => {
@@ -97,13 +96,6 @@ class Login extends React.Component {
         <p>
           Don't have an account?
         </p>
-        {/* <Button
-          title="Sign Up"
-          onPress={() => {
-            this.props.screenProps.switchToSignUp();
-          }}
-          color='#ff0000'
-        /> */}
         <Button 
           variant='contained' 
           color='secondary'
@@ -125,29 +117,5 @@ const styles = {
     color: '#ff0000'
   }
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#FFFFFF',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   list: {
-//     width: 350,
-//     backgroundColor: 'white'
-//     // justifyContent: 'center',
-//   },
-//   signUpText: {
-//     paddingTop: 20,
-//     paddingBottom: 10,
-//   },
-//   signUpButton: {
-//     backgroundColor: '#ff0000',
-//   },
-//   warningText: {
-//     color: '#ff0000'
-//   }
-// });
 
 export default Login;

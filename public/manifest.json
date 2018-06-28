@@ -4,7 +4,11 @@
   "manifest_version": 2,
   "browser_action": {
     "default_popup": "index.html",
-    "default_title": "React Ext"
+    "default_title": "Cook Book"
   },
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "permissions": ["<all_urls>",
+    "storage",
+    "tabs"
+  ]
 }
