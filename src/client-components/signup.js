@@ -33,6 +33,10 @@ class Signup extends React.Component {
   componentDidMount() {
   }
 
+  redirectToLogin(){
+    this.props.changeScreen('login');
+  }
+
   submitSignup() {
     this.setState({
         noEmail: this.state.email.indexOf('@') === -1,
@@ -129,9 +133,7 @@ class Signup extends React.Component {
         </Button>
         <p>Already have an account?</p>
         <Button
-          onClick={() => {
-            // this.props.screenProps.switchToLogin();
-          }}
+          onClick={this.redirectToLogin.bind(this)}
           variant='contained' 
           color='secondary'
           size='small'
@@ -144,7 +146,7 @@ class Signup extends React.Component {
 }
 const styles = {
     textField: {
-    fontSize: 10, 
+    fontSize: 8, 
  }
 }
 //==================================================== 
