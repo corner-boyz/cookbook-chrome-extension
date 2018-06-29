@@ -16,13 +16,24 @@ class Ingredients extends React.Component {
     this.state = {
       index: 0,
       ingredients: [],
+      selected: [],
     }
-
+    
+    this.checkSelected = this.checkSelected.bind(this);
     this.getIngredients = this.getIngredients.bind(this);
   }
   //====================================================
   componentDidMount() {
     this.getIngredients();
+    this.checkSelected();
+  }
+
+  checkSelected() {
+    chrome.storage.sync.get(['selected'], result => {
+      this.setState({
+        selected: result.selected.ingredients || [],
+      });
+    });
   }
 
   getIngredients() {
@@ -59,6 +70,12 @@ class Ingredients extends React.Component {
   render() {
     return (
       <div style={styles.container}>
+        <p>Selected Recipe:</p>
+        <ul>
+        {this.state.selected.map(ingredient => {
+          return <li>{ingredient}</li>;
+        })}
+        </ul>
         <p>Here are your Ingredients:</p>
         <ul>
         {this.state.ingredients.map(ingredient => {
