@@ -1,10 +1,8 @@
 /* global chrome */
 
-// chrome.runtime.onMessage.addListener(receiver);
-
-// window.word = "coding train";
-
-// function receiver(request, sender, sendResponse) {
-//   console.log(request);
-//   word = request.text;
-// }
+chrome.runtime.onMessage.addListener(request => {
+    console.log('Selected:', request);
+    chrome.storage.sync.set({
+        'selected': request
+    });
+});

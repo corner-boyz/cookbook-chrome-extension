@@ -2,22 +2,23 @@
 
 window.addEventListener('mouseup', () => {
     let selectedText = window.getSelection().toString().trim();
-    console.log(parseToArray(selectedText));
-    //   if (selectedText.length > 0) {
-    //     let message = {
-    //       text: selectedText
-    //     };
-    //     chrome.runtime.sendMessage(message);
-    //   }
+    let ingredients = parseToArray(selectedText);
+    console.log(ingredients);
+    if (ingredients.length) {
+        let message = {
+          ingredients: ingredients
+        };
+        chrome.runtime.sendMessage(message);
+      }
 });
 
-const parseToArray = string => {
+const parseToArray = (string) => {
     let arr = string.split(/\n/);
     arr.forEach((str, index) => {
         // Take out unnecesary text
         let cutOffs = [ str.indexOf(','), str.indexOf('(') ];
         cutOffs.forEach(index => {
-            if (index !== -1) {
+            if (index > 5) {
                 str = str.substring(0, index);
             }
         });

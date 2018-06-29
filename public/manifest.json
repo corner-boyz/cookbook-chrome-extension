@@ -8,9 +8,7 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
+      "matches": ["<all_urls>"],
       "js": ["content.js"]
     }
   ],
@@ -18,7 +16,8 @@
     "scripts": ["background.js"]
   },
   "version": "1.0.0",
-  "permissions": ["<all_urls>",
+  "permissions": [
+    "<all_urls>",
     "storage",
     "tabs"
   ]

@@ -1,7 +1,6 @@
 /* global chrome */
 
 import React, { Component } from 'react';
-import Home from './client-components/home';
 import Login from './client-components/login';
 import Signup from './client-components/signup';
 import Ingredients from './client-components/ingredients';
