@@ -5,6 +5,9 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
+import IP from '../IP';
+import axios from 'axios';
+
 //==================================================== 'index' state is required for refreshing the ingredient's list;
 class Ingredients extends React.Component {
   constructor(props) {
@@ -12,11 +15,25 @@ class Ingredients extends React.Component {
 
     this.state = {
       index: 0,
+      ingredients: [],
     }
 
+    this.getIngredients = this.getIngredients.bind(this);
   }
   //====================================================
   componentDidMount() {
+    this.getIngredients();
+  }
+
+  getIngredients() {
+    axios.get(`http://${IP}/api/ingredients/a@a.com`) 
+    .then(results => {
+      this.setState({
+        ingredients: results.data,
+      });
+    }).catch(error => {
+      console.log('Error in retrieving ingredients:', error);
+    });
   }
 
   logOut() {
@@ -43,31 +60,16 @@ class Ingredients extends React.Component {
     return (
       <div style={styles.container}>
         <p>Here are your Ingredients:</p>
-        {/* <List
-          // style={styles.list}
-        > */}
-        {/* <FlatList
-          style={styles.list}
-          data={this.props.screenProps.ingredients}
-          extraData={this.state.index}
-          renderItem={
-            ({ item }) =>
-              <View style={{ flex: 1, flexDirection: 'row' }}>
-                <Text
-                  style={{ flex: 1, flexDirection: 'row', backgroundColor: 'gold' }}
-                >{item.ingredient}</Text>
-                <Text
-                  style={{ flex: 1, flexDirection: 'row', backgroundColor: 'yellow' }}
-                >{item.quantity}{item.unit}</Text>
-              </View>
-          }
-          keyExtractor={(item, index) => item.ingredient}
-        /> */}
-        {/* </List> */}
+        <ul>
+        {this.state.ingredients.map(ingredient => {
+          return <li>{ingredient.ingredient}</li>;
+        })}
+        </ul>
         <TextField
           style={{ height: 40, width: 250 }}
           placeholder='Add an Ingredient'
           onChange={(text) => this.props.screenProps.text = text}
+          inputProps={{style: styles.textField}}
         />
         <Button
           variant='contained' 
@@ -101,7 +103,10 @@ const styles = {
     width: 350,
     backgroundColor: 'white'
     // justifyContent: 'center',
-  }
+  },
+  textField:{
+    fontSize: 12
+  },
 };
 
 export default Ingredients;

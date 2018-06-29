@@ -6,6 +6,17 @@
     "default_popup": "index.html",
     "default_title": "Cook Book"
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": ["content.js"]
+    }
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
   "version": "1.0.0",
   "permissions": ["<all_urls>",
     "storage",
