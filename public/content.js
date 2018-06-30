@@ -9,7 +9,7 @@ window.addEventListener('mouseup', () => {
           ingredients: ingredients
         };
         chrome.runtime.sendMessage(message);
-      }
+    }
 });
 
 const parseToArray = (string) => {
@@ -20,6 +20,8 @@ const parseToArray = (string) => {
         cutOffs.forEach(index => {
             if (index > 5) {
                 str = str.substring(0, index);
+            } else if (index > 0 && str.includes('can')) {
+                str = convertFromCan(str);
             }
         });
         arr[index] = str.trim();
@@ -31,4 +33,9 @@ const parseToArray = (string) => {
     // Remove empty strings
     arr = arr.filter(el => el !== undefined);
     return arr;
+}
+
+const convertFromCan = (str) => {
+    let realUnits = str.substring(str.indexOf('(') + 1, str.indexOf(')'));
+    return realUnits + str.substring(str.indexOf('can') + 3);
 }

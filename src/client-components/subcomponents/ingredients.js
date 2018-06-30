@@ -4,57 +4,27 @@ import React from 'react';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import List from '@material-ui/core/List';
+import ListItemText from '@material-ui/core/ListItemText';
 
-import IP from '../IP';
+import IP from '../../IP';
 import axios from 'axios';
 
-//==================================================== 'index' state is required for refreshing the ingredient's list;
+//==================================================== 
 class Ingredients extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      index: 0,
-      ingredients: [],
-      selected: [],
-    }
-    
-    this.checkSelected = this.checkSelected.bind(this);
-    this.getIngredients = this.getIngredients.bind(this);
   }
   //====================================================
   componentDidMount() {
-    this.getIngredients();
-    this.checkSelected();
+    this.props.update();
   }
 
-  checkSelected() {
-    chrome.storage.sync.get(['selected'], result => {
-      this.setState({
-        selected: result.selected.ingredients || [],
-      });
-    });
+  compare() {
+
   }
 
-  getIngredients() {
-    axios.get(`http://${IP}/api/ingredients/a@a.com`) 
-    .then(results => {
-      this.setState({
-        ingredients: results.data,
-      });
-    }).catch(error => {
-      console.log('Error in retrieving ingredients:', error);
-    });
-  }
-
-  logOut() {
-    chrome.storage.sync.set({
-      'isLoggedIn': false,
-      'email': null,
-      'name': null
-    });
-    this.props.changeScreen('login');
-  }
+  
 
   submitIngredient() {
     let newIngredient = {
@@ -65,25 +35,21 @@ class Ingredients extends React.Component {
     this.setState({
       index: this.state.index + 1
     })
+    this.props.update();
   }
   //====================================================
   render() {
     return (
       <div style={styles.container}>
-        <p>Selected Recipe:</p>
-        <ul>
-        {this.state.selected.map(ingredient => {
-          return <li>{ingredient}</li>;
+        <List>
+        <ListItemText primary='Your Ingredients:'/>
+        {this.props.ingredients.map(obj => {
+          return <ListItemText primary={`${obj.quantity || ''} ${obj.unit || ''} ${obj.ingredient}`}
+                               size="small"/>;
         })}
-        </ul>
-        <p>Here are your Ingredients:</p>
-        <ul>
-        {this.state.ingredients.map(ingredient => {
-          return <li>{ingredient.ingredient}</li>;
-        })}
-        </ul>
+        </List>
         <TextField
-          style={{ height: 40, width: 250 }}
+          style={{ height: 40, width: '100%' }}
           placeholder='Add an Ingredient'
           onChange={(text) => this.props.screenProps.text = text}
           inputProps={{style: styles.textField}}

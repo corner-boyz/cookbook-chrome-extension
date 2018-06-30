@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import Login from './client-components/login';
 import Signup from './client-components/signup';
-import Ingredients from './client-components/ingredients';
+import Main from './client-components/main';
 
 class App extends Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class App extends Component {
 
   render() {
     let loginScreen = <Login changeScreen={this.changeScreen}/>;
-    let ingredientsScreen = <Ingredients changeScreen={this.changeScreen}/>;
+    let ingredientsScreen = <Main changeScreen={this.changeScreen}/>;
     if (this.state.isLoggedIn && this.state.screen === 'login') {
       return ingredientsScreen;
     } else if (!this.state.isLoggedIn && this.state.screen === 'ingredients') {
