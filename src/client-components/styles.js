@@ -25,5 +25,11 @@ module.exports.styles = {
     height: 5,
     color: '#ffffe6',
     borderBottom: '5px solid #ffffe6',
-  }
+  },
+  inPantry: {
+    color: '#00ff00'
+  },
+  needToBuy: {
+    color: '#ff0000'
+  },
 };
