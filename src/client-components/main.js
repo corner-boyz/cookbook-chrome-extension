@@ -9,6 +9,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import ListWrapper from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
+import styles from './styles';
 
 import Recipe from './subcomponents/recipe';
 import Ingredients from './subcomponents/ingredients';
@@ -131,32 +132,5 @@ class Main extends React.Component {
     )
   }
 }
-//==================================================== 
-const styles = {
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  list: {
-    width: 350,
-    backgroundColor: 'white'
-    // justifyContent: 'center',
-  },
-  textField:{
-    fontSize: 12
-  },
-  defaultTab: {
-    width: 20,
-    height: 5,
-  },
-  activeTab: {
-    width: 20,
-    height: 5,
-    color: '#ffffe6',
-    borderBottom: '5px solid #ffffe6',
-  }
-};
 
 export default Main;
