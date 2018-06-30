@@ -60,7 +60,6 @@ class Recipe extends React.Component {
   render() {
     return (
       <div style={styles.container}>
-      <p>FJSJFJFJF</p>
         <List>
           <ListItemText primary='Selected Ingredients:'/>
           {this.state.selected.map(obj => {
