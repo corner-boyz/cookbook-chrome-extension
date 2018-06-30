@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import List from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
+import styles from '../styles';
 
 import IP from '../../IP';
 import axios from 'axios';
@@ -79,22 +80,5 @@ class Recipe extends React.Component {
     )
   }
 }
-//==================================================== 
-const styles = {
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  list: {
-    width: 350,
-    backgroundColor: 'white'
-    // justifyContent: 'center',
-  },
-  textField:{
-    fontSize: 12
-  },
-};
 
 export default Recipe;

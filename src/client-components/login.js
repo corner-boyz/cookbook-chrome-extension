@@ -4,6 +4,7 @@ import React from 'react';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import styles from './styles';
 
 import IP from '../IP';
 import axios from 'axios';
@@ -106,15 +107,6 @@ class Login extends React.Component {
         </Button>
       </div>
     )
-  }
-}
-//==================================================== 
-const styles = {
-  textField:{
-    fontSize: 12
-  },
-  warningText: {
-    color: '#ff0000'
   }
 }
 

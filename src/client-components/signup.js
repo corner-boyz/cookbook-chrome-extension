@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import styles from './styles';
 
 import axios from 'axios';
 import IP from '../IP';
@@ -20,16 +21,9 @@ class Signup extends React.Component {
         notMatching: false,
         tooShort: false,
     }
-    //this.submitSignup = this.submitSignup.bind(this);
+    this.submitSignup = this.submitSignup.bind(this);
 }
-//==================================================== NavBar component
-  // static navigationOptions = {
-  //   tabBarColor: 'green',
-  //   tabBarIcon: () => {
-  //     return <Ionicons name='ios-basket' size={25} color='white' />;
-  //   },
-  // }
-//====================================================
+
   componentDidMount() {
   }
 
@@ -144,14 +138,5 @@ class Signup extends React.Component {
     )
   }
 }
-const styles = {
-  textField: {
-    fontSize: 12, 
-  },
-  warningText: {
-    color: '#ff0000'
-  }
-}
-//==================================================== 
 
 export default Signup;
