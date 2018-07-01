@@ -10,6 +10,7 @@ class App extends Component {
     super(props);
 
     this.state = {
+      isLoggedIn: false,
       screen: 'login',
     }
     this.changeScreen = this.changeScreen.bind(this);
@@ -41,16 +42,16 @@ class App extends Component {
 
   render() {
     let loginScreen = <Login changeScreen={this.changeScreen}/>;
-    let ingredientsScreen = <Main changeScreen={this.changeScreen}/>;
+    let mainScreen = <Main changeScreen={this.changeScreen}/>;
     if (this.state.isLoggedIn && this.state.screen === 'login') {
-      return ingredientsScreen;
+      return mainScreen;
     } else if (!this.state.isLoggedIn && this.state.screen === 'ingredients') {
       return loginScreen;
     } else {
       switch(this.state.screen) {
         case 'login': return loginScreen;
         case 'signup': return <Signup changeScreen={this.changeScreen}/>;
-        case 'ingredients': return ingredientsScreen;
+        case 'ingredients': return mainScreen;
         default: return loginScreen;
       }
     }

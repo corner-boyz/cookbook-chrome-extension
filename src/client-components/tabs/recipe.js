@@ -19,6 +19,7 @@ class Recipe extends React.Component {
     super(props);
 
     this.state = {
+      ingredients: [],
       selected: [],
       comparisonStyles: [],
     }
@@ -28,12 +29,14 @@ class Recipe extends React.Component {
   //====================================================
   componentDidMount() {
     this.getSelected();
+    this.getIngredients();
   }
+
 
   compare() {
     axios.post(`http://${IP}/api/compare`, {
           recipe: this.state.selected,
-          ingredients: this.props.ingredients,
+          ingredients: this.state.ingredients,
         }).then(results => {
           console.log('COMPARISON RESULTS', results.data);
           results.data.forEach((comparison, index) => {
@@ -47,12 +50,21 @@ class Recipe extends React.Component {
               }
             }
           });
-          this.setState({
-            comparisons: results.data,
-          });
         }).catch(error => {
           console.log('Error in comparing selection:', error);
         });
+  }
+
+  getIngredients() {
+    axios.get(`http://${IP}/api/ingredients/a@a.com`) 
+      .then(results => {
+        this.setState({
+          ingredients: results.data,
+        });
+      }).then(this.compare)
+      .catch(error => {
+        console.log('Error in retrieving ingredients:', error);
+      });
   }
 
   getSelected() {
@@ -86,15 +98,22 @@ class Recipe extends React.Component {
   render() {
     return (
       <div style={styles.container}>
-        <List>
-          <ListItemText primary='Selected Ingredients:'/>
-          <ul style={{listStyleType: 'none'}}>
+        <List style={styles.list}>
+          <ListItemText primary='Selected Ingredients:' style={{ width: '90%', margin: 'auto' }}/>
+          {/* <ul style={{listStyleType: 'none'}}> */}
             {this.state.selected.map((obj, index) => {
-              return <li style={this.state.comparisonStyles[index]}>
-                {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
-              </li>
+              // return <li style={this.state.comparisonStyles[index]}>
+              //   {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
+              // </li>
+              return (
+                <Typography variant="body1" color="inherit">
+                  <span style={this.state.comparisonStyles[index]}>
+                    {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
+                  </span>
+                </Typography>
+              )
             })}
-          </ul>
+          {/* </ul> */}
         </List>
         <Button
           variant='contained' 
@@ -102,7 +121,7 @@ class Recipe extends React.Component {
           size='small'
           onClick={this.compare}
         >
-        Compare
+        Add to List
         </Button>
       </div>
     )

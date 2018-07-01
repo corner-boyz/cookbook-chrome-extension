@@ -4,54 +4,44 @@ import React from 'react';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import List from '@material-ui/core/List';
+import ListWrapper from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
+import { Toolbar, Typography } from '@material-ui/core';
 import styles from '../styles';
+
 
 import IP from '../../IP';
 import axios from 'axios';
 
 //==================================================== 
-class Ingredients extends React.Component {
+class List extends React.Component {
   constructor(props) {
     super(props);
   }
   //====================================================
   componentDidMount() {
-    this.props.update();
   }
 
   compare() {
-
   }
-
-
-
-  submitIngredient() {
-    let newIngredient = {
-      name: this.props.screenProps.text,
-      quantity: 99
-    };
-    this.props.screenProps.ingredients.push(newIngredient)
-    this.setState({
-      index: this.state.index + 1
-    })
-    this.props.update();
-  }
+  
   //====================================================
   render() {
     return (
       <div style={styles.container}>
-        <List>
-        <ListItemText primary='Your Ingredients:'/>
-        {this.props.ingredients.map(obj => {
-          return <ListItemText primary={`${obj.quantity || ''} ${obj.unit || ''} ${obj.ingredient}`}
-                               size="small"/>;
-        })}
-        </List>
+        <ListWrapper style={styles.list}>
+          <ListItemText primary='My Grocery List:' style={{ width: '70%', margin: 'auto' }}/>
+          <div style={{ width: '70%', margin: 'auto' }}>
+            {this.props.ingredients.map(obj => {
+              return (<Typography variant="body1" color="inherit">
+                  {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
+                </Typography>)
+            })}
+          </div>
+        </ListWrapper>
         <TextField
           style={{ height: 40, width: '100%' }}
-          placeholder='Add an Ingredient'
+          placeholder='Add an Item'
           onChange={(text) => this.props.screenProps.text = text}
           inputProps={{style: styles.textField}}
         />
@@ -76,4 +66,4 @@ class Ingredients extends React.Component {
   }
 }
 
-export default Ingredients;
+export default List;

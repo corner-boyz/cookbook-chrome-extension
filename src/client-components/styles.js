@@ -1,14 +1,12 @@
-module.exports.styles = {
+module.exports = {
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: 'white',
   },
   list: {
-    width: 350,
-    backgroundColor: 'white'
-    // justifyContent: 'center',
+    backgroundColor: 'white',
+    width: '80%',
+    margin: 'auto',
   },
   textField:{
     fontSize: 12
