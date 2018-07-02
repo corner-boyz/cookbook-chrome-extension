@@ -91,7 +91,16 @@ class IngredientList extends React.Component {
       entry.unit = this.state.units[index];
       entry.ingredient = this.state.ingredients[index];
     });
-    console.log(entries);
+    console.log('ENTRIES', entries);
+    axios.post(`http://${IP}/api/ingredients`, {
+      ingredients: entries,
+      email: 'c@$.com',
+      shouldReplace: this.state.entries.length > 1
+    }).then(() => {
+      console.log('Successful post');
+    }).catch((error) => {
+      console.log('Error in posting ingredient', error);
+    });
   }
   //====================================================
   render() {
@@ -122,7 +131,6 @@ class IngredientList extends React.Component {
                           color='primary'
                           size='small'
                           onClick={() => {
-                            this.props.toggleEditing();
                             this.submitIngredients();
                           }}>
                           Add

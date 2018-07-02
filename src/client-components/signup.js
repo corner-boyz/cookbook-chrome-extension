@@ -117,6 +117,7 @@ class Signup extends React.Component {
           inputProps={{style: styles.textField}}
           onChange={this.updateConfirmedPassword.bind(this)}
         />
+        <div style={{ textAlign: 'center'}}>
         <Button
           onClick={this.submitSignup.bind(this)}
           variant='contained' 
@@ -134,6 +135,7 @@ class Signup extends React.Component {
         > 
         Go Back 
         </Button>
+        </div>
       </div>
     )
   }

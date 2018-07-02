@@ -12,9 +12,13 @@ class App extends Component {
     this.state = {
       isLoggedIn: false,
       screen: 'login',
+      name: '',
+      email: '',
     }
     this.changeScreen = this.changeScreen.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
+    this.setEmail = this.setEmail.bind(this);
+    this.setName = this.setName.bind(this);
   }
   
   componentDidMount() {
@@ -39,10 +43,22 @@ class App extends Component {
     });
   }
 
+  setEmail(email) {
+    this.setState({
+      email: email,
+    });
+  }
+
+  setName(name) {
+    this.setState({
+      name: name,
+    });
+  }
+
 
   render() {
-    let loginScreen = <Login changeScreen={this.changeScreen}/>;
-    let mainScreen = <Main changeScreen={this.changeScreen}/>;
+    let loginScreen = <Login changeScreen={this.changeScreen} setEmail={this.setEmail} setName={this.setName} />;
+    let mainScreen = <Main changeScreen={this.changeScreen} name={this.state.name} email={this.state.email}/>;
     if (this.state.isLoggedIn && this.state.screen === 'login') {
       return mainScreen;
     } else if (!this.state.isLoggedIn && this.state.screen === 'ingredients') {

@@ -26,6 +26,7 @@ class Main extends React.Component {
     super(props);
 
     this.state = {
+      email:'',
       ingredients: [],
       list: [],
       selected: [],
@@ -42,8 +43,13 @@ class Main extends React.Component {
   }
   //====================================================
   componentDidMount() {
-    this.getIngredients();
-    this.getSelected();
+    //this.getIngredients();
+    //this.getSelected();
+    chrome.storage.sync.get(['email'], result => {
+      this.setState({
+        email: result.email
+      });
+    });
   }
 
   componentDidUpdate() {
@@ -124,16 +130,7 @@ class Main extends React.Component {
       <div style={styles.container}>
       <AppBar position="static">
           <div align="right" style={{ height: 20, marginTop: 5, marginRight: 10 }}>
-            {/* <Typography variant="body2" color="inherit"> */}
-            {/* <div className="container">
-              <div className="col">
-                <div className="row"></div>
-                <div className="row">Carter</div>
-                <div className="row"></div>
-              </div>
-              <div className="col"> */}
-                <AccountCircle/>
-            {/* </Typography> */}
+                <AccountCircle onClick={this.logOut}/>
           </div>
           <Tabs>
             <Tab style={this.tabStyles[0]} label="Recipe" onClick={() => this.changeScreen(0)}/>

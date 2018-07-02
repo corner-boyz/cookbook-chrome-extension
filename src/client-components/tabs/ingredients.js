@@ -58,19 +58,6 @@ class Ingredients extends React.Component {
     this.setState({ anchorEl: null });
   };
 
-  
-  submitIngredient() {
-    let newIngredient = {
-      name: this.props.screenProps.text,
-      quantity: 99
-    };
-    this.props.screenProps.ingredients.push(newIngredient)
-    this.setState({
-      index: this.state.index + 1
-    })
-    this.props.update();
-  }
-
   toggleEditing() {
     this.setState({
       editing: !this.state.editing,
