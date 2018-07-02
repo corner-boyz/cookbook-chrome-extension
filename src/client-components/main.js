@@ -2,13 +2,7 @@
 
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import ListWrapper from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
+import { AppBar, Tab, Tabs } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import styles from './styles';
 
@@ -18,7 +12,6 @@ import List from './tabs/list';
 
 import IP from '../IP';
 import axios from 'axios';
-import { Toolbar, Typography } from '@material-ui/core';
 
 //==================================================== 
 class Main extends React.Component {

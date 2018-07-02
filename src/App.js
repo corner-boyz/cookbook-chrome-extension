@@ -1,11 +1,11 @@
 /* global chrome */
 
-import React, { Component } from 'react';
+import React from 'react';
 import Login from './client-components/login';
 import Signup from './client-components/signup';
 import Main from './client-components/main';
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 

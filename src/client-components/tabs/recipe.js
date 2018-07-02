@@ -2,15 +2,9 @@
 
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import styles from '../styles';
-
+import { Button, List, ListItemText, Typography } from '@material-ui/core';
 import InputList from './sub-components/inputList';
+import styles from '../styles';
 
 import IP from '../../IP';
 import axios from 'axios';

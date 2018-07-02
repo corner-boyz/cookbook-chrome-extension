@@ -2,18 +2,12 @@
 
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
-import { Menu, MenuItem, IconButton, Input } from '@material-ui/core';
-import { Toolbar, Typography } from '@material-ui/core';
-import Icon from '@material-ui/core/Icon';
+import { Button, List, ListItemText, Typography } from '@material-ui/core';
+import InputList from './sub-components/inputList';
 import styles from '../styles';
 
 import IP from '../../IP';
 import axios from 'axios';
-import InputList from './sub-components/inputList';
 
 //==================================================== 
 class Ingredients extends React.Component {
