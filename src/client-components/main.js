@@ -9,14 +9,16 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import ListWrapper from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import styles from './styles';
 
-import Recipe from './subcomponents/recipe';
-import Ingredients from './subcomponents/ingredients';
-import List from './subcomponents/list';
+import Recipe from './tabs/recipe';
+import Ingredients from './tabs/ingredients';
+import List from './tabs/list';
 
 import IP from '../IP';
 import axios from 'axios';
+import { Toolbar, Typography } from '@material-ui/core';
 
 //==================================================== 
 class Main extends React.Component {
@@ -24,12 +26,13 @@ class Main extends React.Component {
     super(props);
 
     this.state = {
+      email:'',
       ingredients: [],
       list: [],
       selected: [],
       screen: 0,
     }
-
+    console.log('STYLES', styles);
     this.tabStyles = [styles.defaultTab, styles.defaultTab, styles.defaultTab];
 
     this.changeScreen = this.changeScreen.bind(this);
@@ -40,8 +43,13 @@ class Main extends React.Component {
   }
   //====================================================
   componentDidMount() {
-    this.getIngredients();
-    this.getSelected();
+    //this.getIngredients();
+    //this.getSelected();
+    chrome.storage.sync.get(['email'], result => {
+      this.setState({
+        email: result.email
+      });
+    });
   }
 
   componentDidUpdate() {
@@ -121,6 +129,9 @@ class Main extends React.Component {
     return (
       <div style={styles.container}>
       <AppBar position="static">
+          <div align="right" style={{ height: 20, marginTop: 5, marginRight: 10 }}>
+                <AccountCircle onClick={this.logOut}/>
+          </div>
           <Tabs>
             <Tab style={this.tabStyles[0]} label="Recipe" onClick={() => this.changeScreen(0)}/>
             <Tab style={this.tabStyles[1]} label="Pantry" onClick={() => this.changeScreen(1)}/>
@@ -132,5 +143,5 @@ class Main extends React.Component {
     )
   }
 }
-
+      
 export default Main;

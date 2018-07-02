@@ -87,6 +87,7 @@ class Login extends React.Component {
           onChange={this.updatePassword.bind(this)}
           inputProps={{style: styles.textField}}
         />
+        <div style={{ textAlign: 'center'}}>
         <Button 
           variant='contained' 
           color='primary'
@@ -105,6 +106,7 @@ class Login extends React.Component {
           >
         Sign Up
         </Button>
+        </div>
       </div>
     )
   }
