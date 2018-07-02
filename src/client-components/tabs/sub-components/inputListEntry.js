@@ -123,13 +123,15 @@ class InputListEntry extends React.Component {
           inputProps={{style: styles.textField}}
         />
         </IconButton>
-        <TextField
+        {this.props.type === 'given' ?
+        (<span style={styles.textField}>{this.state.ingredient}</span>)
+        :(<TextField
           value={this.state.ingredient}
           style={{ height: 40, width: '60%' }}
           placeholder='Ingredient'
           onChange={(e) => this.handleIngredient(e.target.value, this.props.index)}
           inputProps={{style: styles.textField}}
-        />
+        />)}
         <Menu
           id="long-menu"
           anchorEl={anchorEl}

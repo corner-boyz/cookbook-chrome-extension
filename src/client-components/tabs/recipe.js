@@ -10,6 +10,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import styles from '../styles';
 
+import InputList from './sub-components/inputList';
+
 import IP from '../../IP';
 import axios from 'axios';
 
@@ -21,10 +23,13 @@ class Recipe extends React.Component {
     this.state = {
       ingredients: [],
       selected: [],
+      comparisons: [],
       comparisonStyles: [],
+      editing: false,
     }
 
     this.compare = this.compare.bind(this);
+    this.toggleEditing = this.toggleEditing.bind(this);
   }
   //====================================================
   componentDidMount() {
@@ -39,16 +44,22 @@ class Recipe extends React.Component {
           ingredients: this.state.ingredients,
         }).then(results => {
           console.log('COMPARISON RESULTS', results.data);
+          let comparisonArr = [];
           results.data.forEach((comparison, index) => {
             if (comparison.quantity > 0) {
               this.state.comparisonStyles[index] = {
                 color: '#78AB46'
               }
             } else {
+              comparison.quantity *= -1;
+              comparisonArr.push(comparison);
               this.state.comparisonStyles[index] = {
                 color: 'red'
               }
             }
+          });
+          this.setState({
+            comparisons: comparisonArr,
           });
         }).catch(error => {
           console.log('Error in comparing selection:', error);
@@ -94,37 +105,47 @@ class Recipe extends React.Component {
       index: this.state.index + 1
     })
   }
+
+  toggleEditing() {
+    this.setState({
+      editing: !this.state.editing,
+    });
+  }
   //====================================================
   render() {
-    return (
-      <div style={styles.container}>
-        <List style={styles.list}>
-          <ListItemText primary='Selected Ingredients:' style={{ width: '90%', margin: 'auto' }}/>
-          {/* <ul style={{listStyleType: 'none'}}> */}
+    let selectedScreen = this.state.editing ? 
+      (<div style={styles.container}>
+        <List style={{ textAlign: 'center' }}>
+          <ListItemText primary='Ingredients Needed:' style={{ width: '80%', margin: 'auto' }}/> 
+          <InputList number={this.state.comparisons.length} 
+          type='editing' 
+          given={this.state.comparisons} 
+          toggleEditing={this.toggleEditing}/>
+        </List>
+      </div>)
+      :(<div style={styles.container}>
+        <List style={{ textAlign: 'center' }}>
+            <ListItemText primary='Selected Ingredients:'style={{ width: '80%', margin: 'auto' }}/> 
             {this.state.selected.map((obj, index) => {
-              // return <li style={this.state.comparisonStyles[index]}>
-              //   {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
-              // </li>
-              return (
-                <Typography variant="body1" color="inherit">
+              return (<Typography variant="body1" color="inherit">
                   <span style={this.state.comparisonStyles[index]}>
                     {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
                   </span>
-                </Typography>
-              )
+                </Typography>)
             })}
-          {/* </ul> */}
         </List>
-        <Button
-          variant='contained' 
-          color='primary'
-          size='small'
-          onClick={this.compare}
-        >
-        Add to List
-        </Button>
-      </div>
-    )
+        <div style={{ textAlign: 'center' }}>
+          <Button
+            variant='contained' 
+            color='primary'
+            size='small'
+            onClick={this.toggleEditing}
+          >
+          See Difference
+          </Button>
+        </div>
+      </div>);
+    return selectedScreen;
   }
 }
 

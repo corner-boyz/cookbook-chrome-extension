@@ -28,16 +28,15 @@ class List extends React.Component {
   //====================================================
   render() {
     return (
+      <div style={{ textAlign: 'center '}}>
       <div style={styles.container}>
         <ListWrapper style={styles.list}>
           <ListItemText primary='My Grocery List:' style={{ width: '70%', margin: 'auto' }}/>
-          <div style={{ width: '70%', margin: 'auto' }}>
             {this.props.ingredients.map(obj => {
               return (<Typography variant="body1" color="inherit">
                   {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
                 </Typography>)
             })}
-          </div>
         </ListWrapper>
         <TextField
           style={{ height: 40, width: '100%' }}
@@ -51,16 +50,9 @@ class List extends React.Component {
           size='small'
           onClick={this.submitIngredient}
         >
-        Submit
+        Add
         </Button>
-        <Button
-          variant='contained' 
-          color='secondary'
-          size='small'
-          onClick={this.logOut}
-        >
-        Log Out
-        </Button>
+      </div>
       </div>
     )
   }

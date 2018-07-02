@@ -95,6 +95,40 @@ class IngredientList extends React.Component {
   }
   //====================================================
   render() {
+    let button = (() => {
+      switch (this.props.type) {
+        case 'editing': return <Button
+                                  variant='contained' 
+                                  color='primary'
+                                  size='small'
+                                  onClick={() => {
+                                    this.props.toggleEditing();
+                                    this.submitIngredients();
+                                  }}>
+                                Add to List
+                                </Button>
+        case 'given': return <Button
+                          variant='contained' 
+                          color='primary'
+                          size='small'
+                          onClick={() => {
+                            this.props.toggleEditing();
+                            this.submitIngredients();
+                          }}>
+                        Save
+                        </Button>
+        default: return <Button
+                          variant='contained' 
+                          color='primary'
+                          size='small'
+                          onClick={() => {
+                            this.props.toggleEditing();
+                            this.submitIngredients();
+                          }}>
+                          Add
+                        </Button>
+      }
+    })();
     return (
       <div style={styles.container}>
       {this.state.entries.map((entry, index) => {
@@ -107,17 +141,9 @@ class IngredientList extends React.Component {
           given={entry}
         />);
       })}
-        <Button
-          variant='contained' 
-          color='primary'
-          size='small'
-          onClick={() => {
-            this.props.toggleEditing();
-            this.submitIngredients();
-          }}
-        >
-        Submit
-        </Button>
+        <div style={{ textAlign: 'center' }}>
+          {button}
+        </div>
       </div>
     )
   }
