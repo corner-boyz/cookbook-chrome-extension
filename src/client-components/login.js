@@ -42,6 +42,8 @@ class Login extends React.Component {
             'email': email,
             'name': name
           });
+          this.props.setEmail(email);
+          this.props.setName(name);
           this.props.changeScreen('ingredients');
         }
       }).catch(error => {

@@ -28,10 +28,6 @@ class Ingredients extends React.Component {
     this.props.update();
   }
 
-  compare() {
-
-  }
-
   getIngredients() {
     axios.get(`http://${IP}/api/ingredients/c@$.com`) 
       .then(results => {
@@ -68,7 +64,7 @@ class Ingredients extends React.Component {
       : (<div style={styles.container}>
         <List style={styles.list}>
           <ListItemText primary='My Ingredients:' style={{ width: '70%', margin: 'auto' }}/> 
-          <div style={{ width: '90%', margin: 'auto' }}>
+          <div style={{ width: '80%', margin: 'auto' }}>
             {this.state.ingredients.map(obj => {
               return (<Typography variant="body1" color="inherit">
               {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
@@ -87,6 +83,7 @@ class Ingredients extends React.Component {
         </div>
         <InputList number={1} 
                    type='empty'
+                   getIngredients={this.getIngredients}
                    toggleEditing={this.toggleEditing}/>
       </div>);
     return ingredientsScreen;

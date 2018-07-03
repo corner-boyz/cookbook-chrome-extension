@@ -37,14 +37,14 @@ class List extends React.Component {
 
     //   }
     // });
-    // axios.get(`http://${IP}/api/grocerylist/a@a.com`) 
-    //   .then(results => {
-    //     this.setState({
-    //       list: results.data,
-    //     });
-    //   }).catch(error => {
-    //     console.log('Error in getting grocery list:', error);
-    //   });
+    axios.get(`http://${IP}/api/grocerylist/a@a.com`) 
+      .then(results => {
+        this.setState({
+          list: results.data,
+        });
+      }).catch(error => {
+        console.log('Error in getting grocery list:', error);
+      });
   }
 
   handleTyping(e) {
@@ -79,7 +79,6 @@ class List extends React.Component {
   //====================================================
   render() {
     return (
-      <div>
         <div style={styles.container}>
           <ListWrapper style={styles.list}>
             <ListItemText primary='My Grocery List:' style={{ width: '70%', margin: 'auto' }}/>
@@ -91,6 +90,7 @@ class List extends React.Component {
               })}
               </div>
           </ListWrapper>
+          <div style={{ textAlign: 'center' }}>
           <Button
             variant='contained' 
             color='primary'
@@ -114,8 +114,8 @@ class List extends React.Component {
           >
           Add
           </Button>
+          </div>
         </div>
-      </div>
     )
   }
 }

@@ -27,12 +27,14 @@ class App extends React.Component {
 
   componentDidUpdate() {
     this.checkLogin();
+    console.log('Email', this.state.email);
+    console.log('Name', this.state.name);
   }
   
   changeScreen(screen){
     this.setState({
       screen: screen,
-    })
+    });
   }
   
   checkLogin() {
