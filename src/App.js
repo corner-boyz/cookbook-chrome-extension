@@ -1,19 +1,19 @@
 /* global chrome */
 
-import React, { Component } from 'react';
+import React from 'react';
 import Login from './client-components/login';
 import Signup from './client-components/signup';
 import Main from './client-components/main';
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       isLoggedIn: false,
       screen: 'login',
-      name: '',
       email: '',
+      name: '',
     }
     this.changeScreen = this.changeScreen.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
@@ -26,19 +26,22 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    this.checkLogin();
+   // this.checkLogin();
   }
   
   changeScreen(screen){
     this.setState({
       screen: screen,
-    })
+    });
   }
   
   checkLogin() {
-    chrome.storage.sync.get(['isLoggedIn'], result => {
+    chrome.storage.sync.get(['login'], result => {
+      const { isLoggedIn, email, name } = result.login;
       this.setState({
-        isLoggedIn: result.isLoggedIn,
+        isLoggedIn: isLoggedIn,
+        email: email,
+        name: name,
       });
     });
   }
@@ -57,17 +60,17 @@ class App extends Component {
 
 
   render() {
-    let loginScreen = <Login changeScreen={this.changeScreen} setEmail={this.setEmail} setName={this.setName} />;
-    let mainScreen = <Main changeScreen={this.changeScreen} name={this.state.name} email={this.state.email}/>;
+    let loginScreen = <Login changeScreen={this.changeScreen} checkLogin={this.checkLogin}/>;
+    let mainScreen = <Main changeScreen={this.changeScreen} checkLogin={this.checkLogin} name={this.state.name} email={this.state.email}/>;
     if (this.state.isLoggedIn && this.state.screen === 'login') {
       return mainScreen;
-    } else if (!this.state.isLoggedIn && this.state.screen === 'ingredients') {
+    } else if (!this.state.isLoggedIn && this.state.screen === 'main') {
       return loginScreen;
     } else {
       switch(this.state.screen) {
         case 'login': return loginScreen;
         case 'signup': return <Signup changeScreen={this.changeScreen}/>;
-        case 'ingredients': return mainScreen;
+        case 'main': return mainScreen;
         default: return loginScreen;
       }
     }

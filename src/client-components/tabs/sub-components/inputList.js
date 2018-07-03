@@ -3,16 +3,11 @@
 import React from 'react';
 
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
-import { Menu, MenuItem, IconButton } from '@material-ui/core';
-import Icon from '@material-ui/core/Icon';
+import InputListEntry from './inputListEntry';
 import styles from '../../styles';
 
 import IP from '../../../IP';
 import axios from 'axios';
-import InputListEntry from './inputListEntry';
 
 //==================================================== 
 class IngredientList extends React.Component {
@@ -21,9 +16,6 @@ class IngredientList extends React.Component {
 
     this.state = {
       entries: [],
-      quantities: [],
-      units: [],
-      ingredients: [],
       type: '',
     }
 
@@ -45,18 +37,11 @@ class IngredientList extends React.Component {
     }
     this.setState({
       entries: objects,
-      quantities: objects.map(obj => obj.quantity),
-      units: objects.map(obj => obj.unit),
-      ingredients: objects.map(obj => obj.ingredient),
     });
   }
 
-  compare() {
-
-  }
-
   createObj() {
-    let obj = { quantity: 0, unit: null, ingredient: '' };
+    let obj = { quantity: null, unit: null, ingredient: '' };
     return obj;
   }
 
@@ -69,10 +54,10 @@ class IngredientList extends React.Component {
   };
 
   handleUnit = (value, index) => {
-    let newUnits = this.state.units.slice();
-    newUnits[index] = value;
+    let newEntries = this.state.entries.slice();
+    newEntries[index].unit = value;
     this.setState({
-      units: newUnits,
+      entries: newEntries,
     });
   };
 
@@ -86,18 +71,12 @@ class IngredientList extends React.Component {
 
   submitIngredients() {
     let entries = this.state.entries.slice();
-    entries.forEach((entry, index) => {
-      entry.quantity = this.state.quantities[index];
-      entry.unit = this.state.units[index];
-      entry.ingredient = this.state.ingredients[index];
-    });
-    console.log('ENTRIES', entries);
     axios.post(`http://${IP}/api/ingredients`, {
       ingredients: entries,
-      email: 'c@$.com',
+      email: this.props.email,
       shouldReplace: this.state.entries.length > 1
     }).then(() => {
-      console.log('Successful post');
+      this.props.getIngredients();
     }).catch((error) => {
       console.log('Error in posting ingredient', error);
     });
@@ -112,7 +91,6 @@ class IngredientList extends React.Component {
                                   size='small'
                                   onClick={() => {
                                     this.props.toggleEditing();
-                                    this.submitIngredients();
                                   }}>
                                 Add to List
                                 </Button>

@@ -2,15 +2,9 @@
 
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import styles from '../styles';
-
+import { Button, List, ListItemText, Typography } from '@material-ui/core';
 import InputList from './sub-components/inputList';
+import styles from '../styles';
 
 import IP from '../../IP';
 import axios from 'axios';
@@ -36,7 +30,6 @@ class Recipe extends React.Component {
     this.getSelected();
     this.getIngredients();
   }
-
 
   compare() {
     axios.post(`http://${IP}/api/compare`, {
@@ -67,7 +60,7 @@ class Recipe extends React.Component {
   }
 
   getIngredients() {
-    axios.get(`http://${IP}/api/ingredients/a@a.com`) 
+    axios.get(`http://${IP}/api/ingredients/${this.props.email}`) 
       .then(results => {
         this.setState({
           ingredients: results.data,
@@ -94,16 +87,7 @@ class Recipe extends React.Component {
     });
   }
 
-
   submitIngredient() {
-    let newIngredient = {
-      name: this.props.screenProps.text,
-      quantity: 99
-    };
-    this.props.screenProps.ingredients.push(newIngredient)
-    this.setState({
-      index: this.state.index + 1
-    })
   }
 
   toggleEditing() {
@@ -118,9 +102,10 @@ class Recipe extends React.Component {
         <List style={{ textAlign: 'center' }}>
           <ListItemText primary='Ingredients Needed:' style={{ width: '80%', margin: 'auto' }}/> 
           <InputList number={this.state.comparisons.length} 
-          type='editing' 
-          given={this.state.comparisons} 
-          toggleEditing={this.toggleEditing}/>
+                     type='editing' 
+                     email={this.props.email}
+                     given={this.state.comparisons} 
+                     toggleEditing={this.toggleEditing}/>
         </List>
       </div>)
       :(<div style={styles.container}>

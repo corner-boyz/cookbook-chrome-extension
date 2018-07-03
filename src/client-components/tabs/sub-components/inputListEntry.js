@@ -2,12 +2,7 @@
 
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
-import { Menu, MenuItem, IconButton } from '@material-ui/core';
-import Icon from '@material-ui/core/Icon';
+import { TextField, Menu, MenuItem, IconButton } from '@material-ui/core';
 import styles from '../../styles';
 
 import IP from '../../../IP';
@@ -20,7 +15,7 @@ class InputListEntry extends React.Component {
 
     this.state = {
       anchorEl: null,
-      quantity: 0,
+      quantity: null,
       unit: null,
       ingredient: '',
     }
@@ -50,10 +45,6 @@ class InputListEntry extends React.Component {
         ingredient: this.props.given.ingredient,
       });
     }
-  }
-
-  compare() {
-
   }
 
   handleClick = (event) => {
@@ -86,16 +77,6 @@ class InputListEntry extends React.Component {
     this.props.handleIngredient(value, index);
   };
 
-  submitIngredient() {
-    let unit = this.state.unit === ' ' ? null : this.state.unit;
-    let newIngredient = {
-      quantity: this.state.quantity,
-      unit: unit,
-      ingredient: this.state.ingredient,
-    };
-    
-    this.props.update();
-  }
   //====================================================
   render() {
     const { anchorEl } = this.state;
@@ -143,8 +124,7 @@ class InputListEntry extends React.Component {
               maxHeight: 48 * 4.5,
               width: 200,
             },
-          }}
-        >
+          }}>
           {Object.keys(this.units).map(option => (
             <MenuItem onClick={() => this.handleUnit(this.units[option], this.props.index)}>
             {option}

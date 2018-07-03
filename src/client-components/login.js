@@ -2,8 +2,7 @@
 
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import { Button, TextField } from '@material-ui/core';
 import styles from './styles';
 
 import IP from '../IP';
@@ -39,11 +38,13 @@ class Login extends React.Component {
         } else {
           let { email, name } = results.data;
           chrome.storage.sync.set({
-            'isLoggedIn': true,
-            'email': email,
-            'name': name
+            'login': {
+              'isLoggedIn': true,
+              'email': email,
+              'name': name,
+            }
           });
-          this.props.changeScreen('ingredients');
+          this.props.changeScreen('main');
         }
       }).catch(error => {
         console.log('Error in validating user login:', error);

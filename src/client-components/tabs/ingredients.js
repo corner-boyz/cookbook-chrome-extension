@@ -2,18 +2,12 @@
 
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
-import { Menu, MenuItem, IconButton, Input } from '@material-ui/core';
-import { Toolbar, Typography } from '@material-ui/core';
-import Icon from '@material-ui/core/Icon';
+import { Button, List, ListItemText, Typography } from '@material-ui/core';
+import InputList from './sub-components/inputList';
 import styles from '../styles';
 
 import IP from '../../IP';
 import axios from 'axios';
-import InputList from './sub-components/inputList';
 
 //==================================================== 
 class Ingredients extends React.Component {
@@ -31,15 +25,12 @@ class Ingredients extends React.Component {
   //====================================================
   componentDidMount() {
     this.getIngredients();
-    this.props.update();
-  }
-
-  compare() {
-
+    console.log('EMAIL', this.props.email);
+    console.log('NAME', this.props.name);
   }
 
   getIngredients() {
-    axios.get(`http://${IP}/api/ingredients/c@$.com`) 
+    axios.get(`http://${IP}/api/ingredients/${this.props.email}`) 
       .then(results => {
         this.setState({
           ingredients: results.data,
@@ -74,7 +65,7 @@ class Ingredients extends React.Component {
       : (<div style={styles.container}>
         <List style={styles.list}>
           <ListItemText primary='My Ingredients:' style={{ width: '70%', margin: 'auto' }}/> 
-          <div style={{ width: '90%', margin: 'auto' }}>
+          <div style={{ width: '80%', margin: 'auto' }}>
             {this.state.ingredients.map(obj => {
               return (<Typography variant="body1" color="inherit">
               {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
@@ -93,6 +84,8 @@ class Ingredients extends React.Component {
         </div>
         <InputList number={1} 
                    type='empty'
+                   email={this.props.email}
+                   getIngredients={this.getIngredients}
                    toggleEditing={this.toggleEditing}/>
       </div>);
     return ingredientsScreen;
