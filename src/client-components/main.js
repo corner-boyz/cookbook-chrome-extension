@@ -10,9 +10,6 @@ import Recipe from './tabs/recipe';
 import Ingredients from './tabs/ingredients';
 import List from './tabs/list';
 
-import IP from '../IP';
-import axios from 'axios';
-
 //==================================================== 
 class Main extends React.Component {
   constructor(props) {
@@ -34,12 +31,7 @@ class Main extends React.Component {
   //====================================================
   componentDidMount() {
     this.props.checkLogin();
-    console.log('EMAIL', this.props.email);
-    console.log('NAME', this.props.name);
-  }
-
-  componentDidUpdate() {
-    //this.updateTabs();
+    this.updateTabs(this.state.screen);
   }
 
   changeScreen(screen) {
@@ -48,33 +40,6 @@ class Main extends React.Component {
     });
     this.updateTabs(screen);
   }
-  
-  // getIngredients() {
-  //   axios.get(`http://${IP}/api/ingredients/a@a.com`) 
-  //   .then(results => {
-  //     this.setState({
-  //       ingredients: results.data,
-  //     });
-  //   }).catch(error => {
-  //     console.log('Error in retrieving ingredients:', error);
-  //   });
-  // }
-  
-  // getSelected() {
-  //   chrome.storage.sync.get(['selected'], result => {
-  //     if (result.selected.ingredients) {
-  //       axios.post(`http://${IP}/api/parse`, {
-  //         ingredients: result.selected.ingredients,
-  //       }).then(results => {
-  //         this.setState({
-  //           selected: results.data,
-  //         });
-  //       }).catch(error => {
-  //         console.log('Error in parsing selection:', error);
-  //       });
-  //     }
-  //   });
-  // }
 
   logOut() {
     chrome.storage.sync.set({

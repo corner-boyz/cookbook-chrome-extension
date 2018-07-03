@@ -36,7 +36,7 @@ class List extends React.Component {
   }
 
   getGroceryList() {
-    axios.get(`http://${IP}/api/grocerylist/a@a.com`) 
+    axios.get(`http://${IP}/api/grocerylist/${this.props.email}`) 
       .then(results => {
         this.setState({
           list: results.data,

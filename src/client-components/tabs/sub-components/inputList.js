@@ -73,7 +73,7 @@ class IngredientList extends React.Component {
     let entries = this.state.entries.slice();
     axios.post(`http://${IP}/api/ingredients`, {
       ingredients: entries,
-      email: 'c@$.com',
+      email: this.props.email,
       shouldReplace: this.state.entries.length > 1
     }).then(() => {
       this.props.getIngredients();

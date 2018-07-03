@@ -60,7 +60,7 @@ class Recipe extends React.Component {
   }
 
   getIngredients() {
-    axios.get(`http://${IP}/api/ingredients/a@a.com`) 
+    axios.get(`http://${IP}/api/ingredients/${this.props.email}`) 
       .then(results => {
         this.setState({
           ingredients: results.data,
@@ -102,9 +102,10 @@ class Recipe extends React.Component {
         <List style={{ textAlign: 'center' }}>
           <ListItemText primary='Ingredients Needed:' style={{ width: '80%', margin: 'auto' }}/> 
           <InputList number={this.state.comparisons.length} 
-          type='editing' 
-          given={this.state.comparisons} 
-          toggleEditing={this.toggleEditing}/>
+                     type='editing' 
+                     email={this.props.email}
+                     given={this.state.comparisons} 
+                     toggleEditing={this.toggleEditing}/>
         </List>
       </div>)
       :(<div style={styles.container}>
