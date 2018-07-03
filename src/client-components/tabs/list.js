@@ -2,8 +2,10 @@
 
 import React from 'react';
 
-import { Button, TextField, ListItemText, Typography } from '@material-ui/core';
+import { Button, Checkbox, ListItemText, Switch, TextField, Typography } from '@material-ui/core';
 import ListWrapper from '@material-ui/core/List';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import styles from '../styles';
 
 import IP from '../../IP';
@@ -17,10 +19,16 @@ class List extends React.Component {
     this.state = {
       item: '',
       list: [],
+      checked: [],
+      isDeleteScreen: true,
     }
 
     this.getGroceryList = this.getGroceryList.bind(this);
     this.postToGroceryList = this.postToGroceryList.bind(this);
+
+    this.handleCheck = this.handleCheck.bind(this);
+    this.handleSwitch = this.handleSwitch.bind(this);
+    this.handleTyping = this.handleTyping.bind(this);
   }
   //====================================================
   componentDidMount() {
@@ -28,15 +36,6 @@ class List extends React.Component {
   }
 
   getGroceryList() {
-    // chrome.storage.sync.get(['list'], result => {
-    //   if (result.list && result.list.length){
-    //     console.log('MATCH');
-    //     this.setState({
-    //       list: result.list,
-    //     });
-
-    //   }
-    // });
     axios.get(`http://${IP}/api/grocerylist/a@a.com`) 
       .then(results => {
         this.setState({
@@ -47,6 +46,20 @@ class List extends React.Component {
       });
   }
 
+  handleCheck(index) {
+    let newChecked = this.state.checked.slice();
+    newChecked[index] = !this.state.checked[index]; 
+    this.setState({
+      checked: newChecked,
+    });
+  }
+
+  handleSwitch() {
+    this.setState({
+      isDeleteScreen: !this.state.isDeleteScreen,
+    });
+  }
+
   handleTyping(e) {
     this.setState({
       item: e.target.value,
@@ -54,7 +67,6 @@ class List extends React.Component {
   }
 
   postToGroceryList() {
-    
     axios.post(`http://${IP}/api/parse/`,
     { ingredients: [this.state.item] }) 
     .then((results) => {
@@ -62,15 +74,7 @@ class List extends React.Component {
       newList.push(results.data);
       this.setState({
         list: this.state.list.concat(results.data),
-      })
-      // let newList = [];
-      // newList.push(results.data);
-      // chrome.storage.sync.set({
-      //   'list': newList,
-      // });
-      // this.setState({
-      //   list: newList,
-      // });
+      });
     }).catch(error => {
       console.log('Error in posting to grocery list:', error);
     });
@@ -83,27 +87,54 @@ class List extends React.Component {
           <ListWrapper style={styles.list}>
             <ListItemText primary='My Grocery List:' style={{ width: '70%', margin: 'auto' }}/>
             <div style={{ width: '80%', margin: 'auto' }}>
-              {this.state.list.map(obj => {
-                return (<Typography variant="body1" color="inherit">
+              {this.state.list.map((obj, index) => {
+                return (
+                <Typography variant='body1' color='inherit'>
+                    <Checkbox 
+                      color='primary'
+                      style={{ width: 25, height: 25 }}
+                      icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 16 }} />}
+                      checkedIcon={<CheckBoxIcon style={{ fontSize: 16 }} />}
+                      checked={this.state.checked[index]}
+                      onChange={() => this.state.handleCheck(index)}
+                    />
                     {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
                   </Typography>)
               })}
               </div>
           </ListWrapper>
           <div style={{ textAlign: 'center' }}>
-          <Button
-            variant='contained' 
-            color='primary'
-            size='small'
-            onClick={this.postToGroceryList}
-          >
-          Selected To Pantry
-          </Button>
+          <div>
+            <Switch
+                checked={this.state.checked[0]}
+                onChange={() => this.handleSwitch()}
+                color="primary"
+            />
+          </div>
+          { this.state.isDeleteScreen ? 
+            (<Button
+              variant='contained' 
+              color='primary'
+              size='small'
+              onClick={this.postToGroceryList}
+            >
+            Delete Selected
+            </Button>)
+            :(<Button
+              variant='contained' 
+              color='primary'
+              size='small'
+              onClick={this.postToGroceryList}
+            >
+            Selected To Pantry
+            </Button>)
+          }
+          <br></br>
           <TextField
             style={{ height: 40, width: '100%' }}
             placeholder='Add an Item'
             value={this.state.item}
-            onChange={this.handleTyping.bind(this)}
+            onChange={this.handleTyping}
             inputProps={{ style: styles.textField}}
           />
           <Button

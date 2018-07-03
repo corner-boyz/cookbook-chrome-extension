@@ -25,7 +25,8 @@ class Ingredients extends React.Component {
   //====================================================
   componentDidMount() {
     this.getIngredients();
-    this.props.update();
+    console.log('EMAIL', this.props.email);
+    console.log('NAME', this.props.name);
   }
 
   getIngredients() {

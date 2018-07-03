@@ -40,10 +40,6 @@ class IngredientList extends React.Component {
     });
   }
 
-  compare() {
-
-  }
-
   createObj() {
     let obj = { quantity: null, unit: null, ingredient: '' };
     return obj;

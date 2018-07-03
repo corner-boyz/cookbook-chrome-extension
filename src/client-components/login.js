@@ -38,13 +38,13 @@ class Login extends React.Component {
         } else {
           let { email, name } = results.data;
           chrome.storage.sync.set({
-            'isLoggedIn': true,
-            'email': email,
-            'name': name
+            'login': {
+              'isLoggedIn': true,
+              'email': email,
+              'name': name,
+            }
           });
-          this.props.setEmail(email);
-          this.props.setName(name);
-          this.props.changeScreen('ingredients');
+          this.props.changeScreen('main');
         }
       }).catch(error => {
         console.log('Error in validating user login:', error);

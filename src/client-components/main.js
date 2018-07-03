@@ -24,67 +24,57 @@ class Main extends React.Component {
       list: [],
       selected: [],
       screen: 0,
-    }
-    console.log('STYLES', styles);
+    };
+
     this.tabStyles = [styles.defaultTab, styles.defaultTab, styles.defaultTab];
 
     this.changeScreen = this.changeScreen.bind(this);
-    this.getSelected = this.getSelected.bind(this);
-    this.getIngredients = this.getIngredients.bind(this);
-    this.updateData = this.updateData.bind(this);
     this.updateTabs = this.updateTabs.bind(this);
   }
   //====================================================
   componentDidMount() {
-    //this.getIngredients();
-    //this.getSelected();
-    chrome.storage.sync.get(['email'], result => {
-      this.setState({
-        email: result.email
-      });
-    });
+    this.props.checkLogin();
+    console.log('EMAIL', this.props.email);
+    console.log('NAME', this.props.name);
   }
 
   componentDidUpdate() {
-    this.updateTabs();
+    //this.updateTabs();
   }
 
   changeScreen(screen) {
     this.setState({
         screen: screen,
     });
-  }
-
-  compare() {
-
+    this.updateTabs(screen);
   }
   
-  getIngredients() {
-    axios.get(`http://${IP}/api/ingredients/a@a.com`) 
-    .then(results => {
-      this.setState({
-        ingredients: results.data,
-      });
-    }).catch(error => {
-      console.log('Error in retrieving ingredients:', error);
-    });
-  }
+  // getIngredients() {
+  //   axios.get(`http://${IP}/api/ingredients/a@a.com`) 
+  //   .then(results => {
+  //     this.setState({
+  //       ingredients: results.data,
+  //     });
+  //   }).catch(error => {
+  //     console.log('Error in retrieving ingredients:', error);
+  //   });
+  // }
   
-  getSelected() {
-    chrome.storage.sync.get(['selected'], result => {
-      if (result.selected.ingredients) {
-        axios.post(`http://${IP}/api/parse`, {
-          ingredients: result.selected.ingredients,
-        }).then(results => {
-          this.setState({
-            selected: results.data,
-          });
-        }).catch(error => {
-          console.log('Error in parsing selection:', error);
-        });
-      }
-    });
-  }
+  // getSelected() {
+  //   chrome.storage.sync.get(['selected'], result => {
+  //     if (result.selected.ingredients) {
+  //       axios.post(`http://${IP}/api/parse`, {
+  //         ingredients: result.selected.ingredients,
+  //       }).then(results => {
+  //         this.setState({
+  //           selected: results.data,
+  //         });
+  //       }).catch(error => {
+  //         console.log('Error in parsing selection:', error);
+  //       });
+  //     }
+  //   });
+  // }
 
   logOut() {
     chrome.storage.sync.set({
@@ -95,14 +85,9 @@ class Main extends React.Component {
     this.props.changeScreen('login');
   }
 
-  updateData() {
-    this.getIngredients();
-    //this.getSelected();
-  }
-
-  updateTabs() {
+  updateTabs(screen) {
     this.tabStyles.forEach((tab, index) => {
-        if (index === this.state.screen) {
+        if (index === screen) {
             this.tabStyles[index] = styles.activeTab;
         } else {
             this.tabStyles[index] = styles.defaultTab;
@@ -113,10 +98,10 @@ class Main extends React.Component {
   render() {
     let currentScreen = (() => {
         switch(this.state.screen) {
-            case 0: return <Recipe ingredients={this.state.ingredients} list={this.state.list} update={this.updateData}/>;
-            case 1: return <Ingredients ingredients={this.state.ingredients} list={this.state.list} selected={this.state.selected} update={this.updateData}/>;
-            case 2: return <List ingredients={this.state.ingredients} list={this.state.list} selected={this.state.selected} update={this.updateData}/>;
-            default: return <Recipe ingredients={this.state.ingredients} list={this.state.list} update={this.updateData}/>;
+            case 0: return <Recipe email={this.props.email} name={this.props.name}/>;
+            case 1: return <Ingredients email={this.props.email} name={this.props.name}/>;
+            case 2: return <List email={this.props.email} name={this.props.name}/>;
+            default: return <Recipe email={this.props.email} name={this.props.name}/>;
         }
     })();
     return (

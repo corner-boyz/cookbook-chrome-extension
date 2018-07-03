@@ -31,7 +31,6 @@ class Recipe extends React.Component {
     this.getIngredients();
   }
 
-
   compare() {
     axios.post(`http://${IP}/api/compare`, {
           recipe: this.state.selected,
@@ -88,16 +87,7 @@ class Recipe extends React.Component {
     });
   }
 
-
   submitIngredient() {
-    let newIngredient = {
-      name: this.props.screenProps.text,
-      quantity: 99
-    };
-    this.props.screenProps.ingredients.push(newIngredient)
-    this.setState({
-      index: this.state.index + 1
-    })
   }
 
   toggleEditing() {
