@@ -24,10 +24,6 @@ class App extends React.Component {
   componentDidMount() {
     this.checkLogin();
   }
-
-  componentDidUpdate() {
-   // this.checkLogin();
-  }
   
   changeScreen(screen){
     this.setState({
