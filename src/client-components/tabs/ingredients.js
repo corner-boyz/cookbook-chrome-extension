@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { Button, List, ListItemText, Typography } from '@material-ui/core';
+import { ClipLoader } from 'react-spinners';
 import InputList from './sub-components/inputList';
 import styles from '../styles';
 
@@ -17,6 +18,7 @@ class Ingredients extends React.Component {
     this.state = {
       ingredients: [],
       editing: false,
+      isLoading: true,
     };
 
     this.getIngredients = this.getIngredients.bind(this);
@@ -34,6 +36,7 @@ class Ingredients extends React.Component {
       .then(results => {
         this.setState({
           ingredients: results.data,
+          isLoading: false,
         });
       }).then(this.compare)
       .catch(error => {
@@ -63,14 +66,22 @@ class Ingredients extends React.Component {
                  given={this.state.ingredients} 
                  toggleEditing={this.toggleEditing}/>
       : (<div style={styles.container}>
-        <List style={styles.list}>
+        <List>
           <ListItemText primary='My Ingredients:' style={{ width: '70%', margin: 'auto' }}/> 
-          <div style={{ width: '80%', margin: 'auto' }}>
-            {this.state.ingredients.map(obj => {
-              return (<Typography variant="body1" color="inherit">
-              {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
-              </Typography>);
-            })}
+          <div style={{ height: 200, maxHeight: 200, overflow: 'auto'}}>
+          {this.state.isLoading ? 
+                (<div style={{ width: "20%", margin: "auto" }}>
+                <div style={{ position: "absolute", top: "50%" }}>
+                 <ClipLoader
+                  color={'#0000FF'} 
+                /></div></div>)
+            :(<div style={{ width: '80%', margin: 'auto' }}>
+              {this.state.ingredients.map(obj => {
+                return (<Typography variant="body1" color="inherit">
+                {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
+                </Typography>);
+              })}
+            </div>)}
           </div>       
         </List>
         <div style={{ textAlign: 'center' }}>
@@ -88,8 +99,10 @@ class Ingredients extends React.Component {
                    getIngredients={this.getIngredients}
                    toggleEditing={this.toggleEditing}/>
       </div>);
-    return ingredientsScreen;
+    
+
+      return ingredientsScreen;
+    }
   }
-}
 
 export default Ingredients;

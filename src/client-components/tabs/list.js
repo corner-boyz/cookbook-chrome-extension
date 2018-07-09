@@ -84,23 +84,25 @@ class List extends React.Component {
   render() {
     return (
         <div style={styles.container}>
-          <ListWrapper style={styles.list}>
+          <ListWrapper>
             <ListItemText primary='My Grocery List:' style={{ width: '70%', margin: 'auto' }}/>
-            <div style={{ width: '80%', margin: 'auto' }}>
-              {this.state.list.map((obj, index) => {
-                return (
-                <Typography variant='body1' color='inherit'>
-                    <Checkbox 
-                      color='primary'
-                      style={{ width: 25, height: 25 }}
-                      icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 16 }} />}
-                      checkedIcon={<CheckBoxIcon style={{ fontSize: 16 }} />}
-                      checked={this.state.checked[index]}
-                      onChange={() => this.state.handleCheck(index)}
-                    />
-                    {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
-                  </Typography>)
-              })}
+            <div style={{ height: 100, maxHeight: 100, overflow: 'auto'}}>
+              <div style={{ width: '70%', margin: 'auto' }}>
+                {this.state.list.map((obj, index) => {
+                  return (
+                  <Typography variant='body1' color='inherit'>
+                      <Checkbox 
+                        color='primary'
+                        style={{ width: 25, height: 25 }}
+                        icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 16 }} />}
+                        checkedIcon={<CheckBoxIcon style={{ fontSize: 16 }} />}
+                        checked={this.state.checked[index]}
+                        onChange={() => this.state.handleCheck(index)}
+                      />
+                      {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
+                    </Typography>)
+                })}
+                </div>
               </div>
           </ListWrapper>
           <div style={{ textAlign: 'center' }}>
@@ -111,6 +113,7 @@ class List extends React.Component {
                 color="primary"
             />
           </div>
+          <div style={{ marginBottom: 10 }}>
           { this.state.isDeleteScreen ? 
             (<Button
               variant='contained' 
@@ -129,7 +132,7 @@ class List extends React.Component {
             Selected To Pantry
             </Button>)
           }
-          <br></br>
+          </div>
           <TextField
             style={{ height: 40, width: '100%' }}
             placeholder='Add an Item'

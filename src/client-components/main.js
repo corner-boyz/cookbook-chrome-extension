@@ -6,7 +6,7 @@ import { AppBar, Tab, Tabs } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import styles from './styles';
 
-import Recipe from './tabs/recipe';
+import SavedRecipes from './tabs/savedRecipes';
 import Ingredients from './tabs/ingredients';
 import List from './tabs/list';
 
@@ -63,10 +63,10 @@ class Main extends React.Component {
   render() {
     let currentScreen = (() => {
         switch(this.state.screen) {
-            case 0: return <Recipe email={this.props.email} name={this.props.name}/>;
-            case 1: return <Ingredients email={this.props.email} name={this.props.name}/>;
-            case 2: return <List email={this.props.email} name={this.props.name}/>;
-            default: return <Recipe email={this.props.email} name={this.props.name}/>;
+            case 0: return <Ingredients email={this.props.email} name={this.props.name}/>;
+            case 1: return <List email={this.props.email} name={this.props.name}/>;
+            case 2: return <SavedRecipes email={this.props.email} name={this.props.name}/>;
+            default: return <Ingredients email={this.props.email} name={this.props.name}/>;
         }
     })();
     return (
@@ -76,9 +76,9 @@ class Main extends React.Component {
                 <AccountCircle onClick={this.logOut}/>
           </div>
           <Tabs>
-            <Tab style={this.tabStyles[0]} label="Recipe" onClick={() => this.changeScreen(0)}/>
-            <Tab style={this.tabStyles[1]} label="Pantry" onClick={() => this.changeScreen(1)}/>
-            <Tab style={this.tabStyles[2]} label="List" onClick={() => this.changeScreen(2)}/>
+            <Tab style={this.tabStyles[0]} label="Pantry" onClick={() => this.changeScreen(0)}/>
+            <Tab style={this.tabStyles[1]} label="List" onClick={() => this.changeScreen(1)}/>
+            <Tab style={this.tabStyles[2]} label="Recipes" onClick={() => this.changeScreen(2)}/>
           </Tabs>
       </AppBar>
       {currentScreen}

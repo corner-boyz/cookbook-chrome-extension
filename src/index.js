@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 //import './index.css';
-import App from './App';
+import PopupOrModal from './PopupOrModal';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<PopupOrModal />, document.getElementById('root'));
 registerServiceWorker();

@@ -1,4 +1,8 @@
 module.exports = {
+  main: {
+    maxHeight: 400, 
+    overflow: 'auto'
+  },
   container: {
     flex: 1,
     backgroundColor: 'white',

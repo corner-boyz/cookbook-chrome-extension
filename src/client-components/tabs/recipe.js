@@ -101,11 +101,13 @@ class Recipe extends React.Component {
       (<div style={styles.container}>
         <List style={{ textAlign: 'center' }}>
           <ListItemText primary='Ingredients Needed:' style={{ width: '80%', margin: 'auto' }}/> 
+          <div style={{ height: 100, maxHeight: 100, overflow: 'auto'}}>
           <InputList number={this.state.comparisons.length} 
                      type='editing' 
-                     email={this.props.email}
+                     email={this.state.email}
                      given={this.state.comparisons} 
                      toggleEditing={this.toggleEditing}/>
+          </div>      
         </List>
       </div>)
       :(<div style={styles.container}>
