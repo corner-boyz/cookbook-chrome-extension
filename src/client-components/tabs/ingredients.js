@@ -22,13 +22,12 @@ class Ingredients extends React.Component {
     };
 
     this.getIngredients = this.getIngredients.bind(this);
+    this.saveScreen = this.saveScreen.bind(this);
     this.toggleEditing = this.toggleEditing.bind(this);
   }
   //====================================================
   componentDidMount() {
     this.getIngredients();
-    console.log('EMAIL', this.props.email);
-    console.log('NAME', this.props.name);
   }
 
   getIngredients() {
@@ -38,7 +37,7 @@ class Ingredients extends React.Component {
           ingredients: results.data,
           isLoading: false,
         });
-      }).then(this.compare)
+      })
       .catch(error => {
         console.log('Error in retrieving ingredients:', error);
       });
@@ -52,6 +51,12 @@ class Ingredients extends React.Component {
     this.setState({ anchorEl: null });
   };
 
+  saveScreen() {
+    this.setState({
+      isLoading: true,
+    });
+  }
+
   toggleEditing() {
     this.setState({
       editing: !this.state.editing,
@@ -61,10 +66,19 @@ class Ingredients extends React.Component {
   //====================================================
   render() {
     let ingredientsScreen = this.state.editing ?
-      <InputList number={this.state.ingredients.length} 
+      (<div style={styles.container}> 
+        <List>
+          <ListItemText primary='Edit Ingredients:' style={{ width: '75%', margin: 'auto' }}/>
+          <InputList number={this.state.ingredients.length} 
                  type='given' 
+                 endpoint='ingredients'
+                 email={this.props.email}
                  given={this.state.ingredients} 
+                 getIngredients={this.getIngredients}
+                 saveScreen={this.saveScreen}
                  toggleEditing={this.toggleEditing}/>
+        </List>
+      </div>)
       : (<div style={styles.container}>
         <List>
           <ListItemText primary='My Ingredients:' style={{ width: '70%', margin: 'auto' }}/> 
@@ -73,9 +87,9 @@ class Ingredients extends React.Component {
                 (<div style={{ width: "20%", margin: "auto" }}>
                 <div style={{ position: "absolute", top: "50%" }}>
                  <ClipLoader
-                  color={'#0000FF'} 
+                  color={'orange'} 
                 /></div></div>)
-            :(<div style={{ width: '80%', margin: 'auto' }}>
+            :(<div style={{ width: '70%', margin: 'auto' }}>
               {this.state.ingredients.map(obj => {
                 return (<Typography variant="body1" color="inherit">
                 {obj.quantity || ''} {obj.unit || ''} {obj.ingredient}
@@ -93,11 +107,14 @@ class Ingredients extends React.Component {
             Edit
           </Button> 
         </div>
+        <div style={{ width: '90%', margin: 'auto' }}>
         <InputList number={1} 
                    type='empty'
+                   endpoint='ingredients'
                    email={this.props.email}
                    getIngredients={this.getIngredients}
                    toggleEditing={this.toggleEditing}/>
+        </div>
       </div>);
     
 

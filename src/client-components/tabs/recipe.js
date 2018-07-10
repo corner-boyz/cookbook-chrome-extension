@@ -19,24 +19,32 @@ class Recipe extends React.Component {
       selected: [],
       comparisons: [],
       comparisonStyles: [],
+      list: [],
+      email: '',
+      savedNum: 0,
       editing: false,
-    }
+      isLoading: true,
+      isSaving: false,
+      saved: false,
+      noEmail: false,
+    };
 
     this.compare = this.compare.bind(this);
+    this.submitList = this.submitList.bind(this);
     this.toggleEditing = this.toggleEditing.bind(this);
+    this.toggleSaving = this.toggleSaving.bind(this);
   }
   //====================================================
   componentDidMount() {
     this.getSelected();
-    this.getIngredients();
+    this.getEmail();
   }
 
   compare() {
-    axios.post(`http://${IP}/api/compare`, {
+    axios.post(`http://${IP}/api/compareExtension`, {
           recipe: this.state.selected,
           ingredients: this.state.ingredients,
         }).then(results => {
-          console.log('COMPARISON RESULTS', results.data);
           let comparisonArr = [];
           results.data.forEach((comparison, index) => {
             if (comparison.quantity > 0) {
@@ -59,8 +67,36 @@ class Recipe extends React.Component {
         });
   }
 
-  getIngredients() {
-    axios.get(`http://${IP}/api/ingredients/${this.props.email}`) 
+  getEmail() {
+    chrome.storage.sync.get(['cbLogin'], result => {
+      const { email } = result.cbLogin;
+      if (!email) {
+        this.setState({
+          noEmail: true,
+        });
+      } else {
+        this.setState({
+          email: email,
+        });
+        this.getIngredients(email);
+        this.getGroceryList(email);
+      }
+    });
+  }
+
+  getGroceryList(email) {
+    axios.get(`http://${IP}/api/grocerylist/${email}`) 
+      .then(results => {
+        this.setState({
+          list: results.data,
+        });
+      }).catch(error => {
+        console.log('Error in getting grocery list:', error);
+      });
+  }
+
+  getIngredients(email) {
+    axios.get(`http://${IP}/api/ingredients/${email}`) 
       .then(results => {
         this.setState({
           ingredients: results.data,
@@ -72,10 +108,11 @@ class Recipe extends React.Component {
   }
 
   getSelected() {
-    chrome.storage.sync.get(['selected'], result => {
-      if (result.selected.ingredients) {
+    chrome.storage.sync.get(['cbSelected'], result => {
+      console.log('SELECTION RESULTS', result);
+      if (result.cbSelected.ingredients) {
         axios.post(`http://${IP}/api/parse`, {
-          ingredients: result.selected.ingredients,
+          ingredients: result.cbSelected.ingredients,
         }).then(results => {
           this.setState({
             selected: results.data,
@@ -87,32 +124,67 @@ class Recipe extends React.Component {
     });
   }
 
-  submitIngredient() {
-  }
+  submitList(entries) {
+    let validEntries = entries.filter(entry => entry.quantity > 0);
+    this.setState({
+      savedNum: validEntries.length,
+    });
+    axios.post(`http://${IP}/api/combineExtension`, {
+      ingredients: entries,
+      oldIngredients: this.state.list
+    }).then(results => {
+        let newList = results.data;
+        newList.forEach(ingredient => {
+          ingredient.ispurchased = false;
+        });
+        axios.post(`http://${IP}/api/grocerylist`, {
+          ingredients: newList,
+          email: this.state.email,
+          shouldReplace: true,
+        }).then(() => {
+          this.setState({
+            saved: true
+          });
+        }).catch((error) => {
+          console.log('Error in submitting list', error);
+        });
+    }).catch((error) => {
+      console.log('Error in converting list', error);
+    });
+}
 
   toggleEditing() {
     this.setState({
       editing: !this.state.editing,
     });
   }
+
+  toggleSaving() {
+    this.setState({
+      isSaving: !this.state.isSaving,
+    });
+  }
+
   //====================================================
   render() {
     let selectedScreen = this.state.editing ? 
       (<div style={styles.container}>
         <List style={{ textAlign: 'center' }}>
-          <ListItemText primary='Ingredients Needed:' style={{ width: '80%', margin: 'auto' }}/> 
-          <div style={{ height: 100, maxHeight: 100, overflow: 'auto'}}>
+          <ListItemText primary='Ingredients Needed:' style={{ textAlign: 'center' }}/>
           <InputList number={this.state.comparisons.length} 
                      type='editing' 
+                     endpoint='grocerylist'
                      email={this.state.email}
                      given={this.state.comparisons} 
-                     toggleEditing={this.toggleEditing}/>
-          </div>      
+                     submitList={this.submitList}
+                     toggleEditing={this.toggleEditing}
+                     toggleSaving={this.toggleSaving}/>
         </List>
       </div>)
       :(<div style={styles.container}>
         <List style={{ textAlign: 'center' }}>
-            <ListItemText primary='Selected Ingredients:'style={{ width: '80%', margin: 'auto' }}/> 
+            <ListItemText primary='Selected Ingredients:'/> 
+            <div style={{ height: 180, maxHeight: 180, overflow: 'auto' }}>
             {this.state.selected.map((obj, index) => {
               return (<Typography variant="body1" color="inherit">
                   <span style={this.state.comparisonStyles[index]}>
@@ -120,19 +192,33 @@ class Recipe extends React.Component {
                   </span>
                 </Typography>)
             })}
+            </div>
         </List>
-        <div style={{ textAlign: 'center' }}>
-          <Button
+        <div style={{ textAlign: 'center', marginTop: 10 }}>
+        {this.state.comparisons.length ? 
+          (<Button
             variant='contained' 
             color='primary'
             size='small'
             onClick={this.toggleEditing}
           >
-          See Difference
-          </Button>
+          Compare
+          </Button>)
+          :(null)
+        }
         </div>
       </div>);
-    return selectedScreen;
+    if (this.state.noEmail) {
+      return <p> Please log in to your CookBook account! </p>
+    } else if (this.state.isSaving) {
+      if (this.state.saved) {
+        return <p> {this.state.savedNum} ingredients saved to your grocery list! </p>
+      } else {
+        return <p> Saving... </p>
+      }
+    } else {
+      return selectedScreen;
+    }
   }
 }
 

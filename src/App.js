@@ -4,7 +4,6 @@ import React from 'react';
 import Login from './client-components/login';
 import Signup from './client-components/signup';
 import Main from './client-components/main';
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -24,6 +23,10 @@ class App extends React.Component {
   componentDidMount() {
     this.checkLogin();
   }
+
+  componentDidUpdate() {
+    this.checkLogin();
+  }
   
   changeScreen(screen){
     this.setState({
@@ -32,8 +35,8 @@ class App extends React.Component {
   }
   
   checkLogin() {
-    chrome.storage.sync.get(['login'], result => {
-      const { isLoggedIn, email, name } = result.login;
+    chrome.storage.sync.get(['cbLogin'], result => {
+      const { isLoggedIn, email, name } = result.cbLogin;
       this.setState({
         isLoggedIn: isLoggedIn,
         email: email,
@@ -54,10 +57,9 @@ class App extends React.Component {
     });
   }
 
-
   render() {
     let loginScreen = <Login changeScreen={this.changeScreen} checkLogin={this.checkLogin}/>;
-    let mainScreen = <Main changeScreen={this.changeScreen} checkLogin={this.checkLogin} name={this.state.name} email={this.state.email}/>;
+    let mainScreen = <Main changeScreen={this.changeScreen} checkLogin={this.checkLogin} name={this.state.name} email={this.state.email} changeTheme={this.props.changeTheme}/>;
     if (this.state.isLoggedIn && this.state.screen === 'login') {
       return mainScreen;
     } else if (!this.state.isLoggedIn && this.state.screen === 'main') {

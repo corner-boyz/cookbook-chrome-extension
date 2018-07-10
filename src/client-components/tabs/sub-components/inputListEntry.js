@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import { TextField, Menu, MenuItem, IconButton } from '@material-ui/core';
+import { Grid, TextField, Menu, MenuItem, IconButton } from '@material-ui/core';
+import { Delete }from '@material-ui/icons';
 import styles from '../../styles';
 
 import IP from '../../../IP';
@@ -33,6 +34,7 @@ class InputListEntry extends React.Component {
       pound: 'lb',
       liter: 'l',
     };
+
   }
   //====================================================
   componentDidMount() {
@@ -82,6 +84,19 @@ class InputListEntry extends React.Component {
     const { anchorEl } = this.state;
     return (
       <div style={styles.container}>
+      <Grid container>
+      {(this.props.type === 'given' || this.props.type === 'editing') ? 
+        (<Grid item xs={2}>
+          <br></br>
+            <Delete 
+            style={{ height: 20, width: 20 }}
+            color='active'
+            onClick={() => this.handleQuantity(0, this.props.index)}/>
+          <br></br>
+        </Grid>)
+        :(null)
+      }
+        <Grid item xs={this.props.type === 'empty' ? 12 : 10}>
         <TextField
           value={this.state.quantity}
           style={{ height: 40, width: '15%' }}
@@ -112,7 +127,9 @@ class InputListEntry extends React.Component {
           placeholder='Ingredient'
           onChange={(e) => this.handleIngredient(e.target.value, this.props.index)}
           inputProps={{style: styles.textField}}
-        />)}
+        />)} 
+          </Grid>
+        </Grid>
         <Menu
           id="long-menu"
           anchorEl={anchorEl}
