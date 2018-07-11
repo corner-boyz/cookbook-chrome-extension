@@ -1,6 +1,6 @@
 {
-  "short_name": "Cook Book",
-  "name": "Cook Book Chrome Extension",
+  "short_name": "Flex Chef",
+  "name": "Flex Chef",
   "manifest_version": 2,
   "browser_action": {
     "default_icon": {
@@ -8,7 +8,7 @@
       "38": "icons/icon38.png"
     },
     "default_popup": "index.html",
-    "default_title": "Cook Book"
+    "default_title": "Flex Chef"
   },
   "icons": {
     "16": "icons/icon16.png",

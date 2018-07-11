@@ -30,7 +30,7 @@ class List extends React.Component {
     this.deleteSelected = this.deleteSelected.bind(this);
     this.getGroceryList = this.getGroceryList.bind(this);
     this.groceryListToPantry = this.groceryListToPantry.bind(this);
-    this.postToGroceryList = this.postToGroceryList.bind(this);
+    //this.postToGroceryList = this.postToGroceryList.bind(this);
 
     this.handleCheck = this.handleCheck.bind(this);
     this.handleSwitch = this.handleSwitch.bind(this);
@@ -91,8 +91,15 @@ class List extends React.Component {
     }) 
     .then(() => {
       this.getGroceryList();
-    }).catch(error => {
-      alert('Could not convert units from your grocery list to your pantry. Please edit your ingredients and try again.');
+    }).catch(err => {
+      if (err.request._hasError || err.response.request.status === 404) {
+        console.log('ERROR purchasing ingredients', err);
+        alert('Trouble connecting to server. Please try again later.');
+      }
+      else if (err.response) {
+        console.log('ERROR converting units', err.response.request.response);
+        alert('Invalid unit conversion', err.response.request.response);
+      }
     });
     }
     
@@ -127,20 +134,19 @@ class List extends React.Component {
     });
   }
 
-
-  postToGroceryList() {
-    axios.post(`http://${IP}/api/parse/`,
-    { ingredients: [this.state.item] }) 
-    .then((results) => {
-      let newList = this.state.list.slice();
-      newList.push(results.data);
-      this.setState({
-        list: this.state.list.concat(results.data),
-      });
-    }).catch(error => {
-      console.log('Error in posting to grocery list:', error);
-    });
-  }
+  // postToGroceryList() {
+  //   axios.post(`http://${IP}/api/parse/`,
+  //   { ingredients: [this.state.item] }) 
+  //   .then((results) => {
+  //     let newList = this.state.list.slice();
+  //     newList.push(results.data);
+  //     this.setState({
+  //       list: this.state.list.concat(results.data),
+  //     });
+  //   }).catch(error => {
+  //     console.log('Error in posting to grocery list:', error);
+  //   });
+  // }
   
   //====================================================
   render() {

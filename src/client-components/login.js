@@ -71,7 +71,7 @@ class Login extends React.Component {
     return (
       <div style={{ width: 218, backgroundImage: 'url("./4.jpg")', border: '1px solid lightgray', textAlign: 'center' }}>
         <div style={{ marginTop: 10}}>
-          <Typography variant="title" color="inherit">Flex Chef</Typography>
+          <img src="./logo.png" height="120" width="120"></img>
           <Typography variant="body2" color="inherit">
             <span style={{ marginRight: 5, textDecoration: 'underline' }}>Login</span> 
             <span style={{ marginLeft: 5 }} onClick={this.redirectToSignup.bind(this)}>Sign Up</span>
@@ -107,17 +107,6 @@ class Login extends React.Component {
           </div>
         </div>
         </Paper>
-        {/* <p>
-          Don't have an account?
-        </p>
-        <Button 
-          variant='contained' 
-          color='secondary'
-          size='small'
-          onClick={this.redirectToSignup.bind(this)}
-          >
-        Sign Up
-        </Button> */}
       </div>
     )
   }

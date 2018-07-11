@@ -85,7 +85,7 @@ class Signup extends React.Component {
     return (
       <div style={{ width: 218, backgroundImage: 'url("./4.jpg")', border: '1px solid lightgray', textAlign: 'center' }}>
         <div style={{ marginTop: 10}}>
-          <Typography variant="title" color="inherit">Flex Chef</Typography>
+          <img src="./logo.png" height="120" width="120"></img>
           <Typography variant="body2" color="inherit">
             <span style={{ marginRight: 5 }} onClick={this.redirectToLogin.bind(this)}>Login</span> 
             <span style={{ marginLeft: 5, textDecoration: 'underline' }}>Sign Up</span>

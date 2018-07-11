@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
+import { Button, Typography } from '@material-ui/core';
 import InputListEntry from './inputListEntry';
 import styles from '../../styles';
 
@@ -91,6 +91,11 @@ class IngredientList extends React.Component {
     this.setState({
       entries: [],
     });
+    setTimeout(() => {
+      if (!this.state.entries.length) {
+        this.createEntries();
+      }
+    }, 3000);
   }
 
   setStyle() {
@@ -122,8 +127,15 @@ class IngredientList extends React.Component {
       if (!this.state.entries.length) {
         this.createEntries();
       }
-    }).catch((error) => {
-      console.log('Error in posting ingredient', error);
+    }).catch((err) => {
+      if (err.request._hasError || err.response.request.status === 404) {
+        console.log('ERROR purchasing ingredients', err);
+        alert('Trouble connecting to server. Please try again later.');
+      }
+      else if (err.response) {
+        console.log('ERROR converting units', err.response.request.response);
+        alert('Invalid unit conversion: ' + err.response.request.response);
+      }
     });
   }
   //====================================================
@@ -169,9 +181,15 @@ class IngredientList extends React.Component {
       <div>
         <div style={this.state.style}>
         <div> 
-        {this.state.entries.length ? (null) : <p>Adding...</p>}
+        {this.state.entries.length ? (null) : 
+        <div style={{ height: 50, textAlign: 'center' }}>
+          <br></br>
+          <Typography variant="body1" color="inherit">Adding...</Typography>
+          <br></br>
+        </div>
+        }
         {this.state.entries.map((entry, index) => {
-          if (entry.quantity > 0 || this.props.type === 'empty') {
+          if (entry.quantity !== 0 || this.props.type === 'empty') {
             return (<span><InputListEntry
             handleQuantity={this.handleQuantity}
             handleUnit={this.handleUnit}

@@ -28,7 +28,7 @@ class SavedRecipes extends React.Component {
   }
 
   getRecipes() {
-    axios.get(`http://${IP}/api/userRecipes/${this.props.email}`) 
+    axios.get(`http://${IP}/api/usercombinedrecipes/${this.props.email}`) 
       .then(results => {
         console.log('RECIPES', results);
         this.setState({

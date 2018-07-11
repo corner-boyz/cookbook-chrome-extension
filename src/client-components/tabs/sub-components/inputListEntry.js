@@ -127,6 +127,7 @@ class InputListEntry extends React.Component {
           placeholder='Ingredient'
           onChange={(e) => this.handleIngredient(e.target.value, this.props.index)}
           inputProps={{style: styles.textField}}
+          floatingLabelFocusStyle={{ color: 'orange' }}
         />)} 
           </Grid>
         </Grid>
