@@ -29,6 +29,8 @@
   },
   "version": "1.0.0",
   "permissions": [
+    "https://*/",
+    "http://*/",
     "<all_urls>",
     "contextMenus",
     "storage",

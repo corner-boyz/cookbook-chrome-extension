@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { Button, TextField } from '@material-ui/core';
+import { Button, Paper, TextField, Typography } from '@material-ui/core';
 import styles from './styles';
 
 import IP from '../IP';
@@ -38,7 +38,7 @@ class Login extends React.Component {
         } else {
           let { email, name } = results.data;
           chrome.storage.sync.set({
-            'login': {
+            'cbLogin': {
               'isLoggedIn': true,
               'email': email,
               'name': name,
@@ -69,34 +69,45 @@ class Login extends React.Component {
   //====================================================
   render() {
     return (
-      <div>
-        <p>Log in to your CookBook account:</p>
-        <TextField
-          style={{ height: 40, width: 250 }}
-          placeholder='Email'
-          onChange={this.updateEmail.bind(this)}
-          inputProps={{style: styles.textField}}
+      <div style={{ width: 218, backgroundImage: 'url("./4.jpg")', border: '1px solid lightgray', textAlign: 'center' }}>
+        <div style={{ marginTop: 10}}>
+          <Typography variant="title" color="inherit">Flex Chef</Typography>
+          <Typography variant="body2" color="inherit">
+            <span style={{ marginRight: 5, textDecoration: 'underline' }}>Login</span> 
+            <span style={{ marginLeft: 5 }} onClick={this.redirectToSignup.bind(this)}>Sign Up</span>
+          </Typography>
+        </div>
+        <Paper style={{ width: '90%', margin: 'auto', borderRadius: '20px', marginTop: 10, marginBottom: 10 }}>
+        <div style={{ paddingTop: 10, paddingBottom: 10 }}>
+          <TextField
+            style={{ height: 40, width: '60%', margin: 'auto' }}
+            placeholder='Email'
+            onChange={this.updateEmail.bind(this)}
+            inputProps={{style: styles.textField}}
+            />
+          {this.state.wrongEmailOrPass
+            ? (<p style={styles.warningText}>Wrong email or password.</p>)
+            : (null)}
+          <TextField
+            style={{ height: 40, width: '60%', margin: 'auto' }}
+            type='password'
+            placeholder='Password'
+            secureTextEntry={true}
+            onChange={this.updatePassword.bind(this)}
+            inputProps={{style: styles.textField}}
           />
-        {this.state.wrongEmailOrPass
-          ? (<p style={styles.warningText}>Wrong email or password.</p>)
-          : (null)}
-        <TextField
-          style={{ height: 40, width: 250 }}
-          type='password'
-          placeholder='Password'
-          secureTextEntry={true}
-          onChange={this.updatePassword.bind(this)}
-          inputProps={{style: styles.textField}}
-        />
-        <div style={{ textAlign: 'center'}}>
-        <Button 
-          variant='contained' 
-          color='primary'
-          size='small'
-          onClick={this.submitLogin.bind(this)}>
-        Log In 
-        </Button>
-        <p>
+          <div style={{ textAlign: 'center'}}>
+            <Button 
+              variant='contained' 
+              color='primary'
+              size='small'
+              onClick={this.submitLogin.bind(this)}>
+            Log In 
+            </Button>
+          </div>
+        </div>
+        </Paper>
+        {/* <p>
           Don't have an account?
         </p>
         <Button 
@@ -106,8 +117,7 @@ class Login extends React.Component {
           onClick={this.redirectToSignup.bind(this)}
           >
         Sign Up
-        </Button>
-        </div>
+        </Button> */}
       </div>
     )
   }

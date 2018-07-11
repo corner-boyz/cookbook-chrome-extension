@@ -6,7 +6,6 @@ window.addEventListener("mouseup", () => {
     .toString()
     .trim();
   let ingredients = parseToArray(selectedText);
-  console.log("INGREDIENTS", ingredients);
   if (ingredients.length) {
     let message = {
       ingredients: ingredients
@@ -15,95 +14,26 @@ window.addEventListener("mouseup", () => {
   }
 });
 
-//Button trigger modal
-{
-  /* <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  Launch demo modal
-</button> */
-}
-
-//Modal
-//$('body').append('');
-
-// $('body').append("<div style='position: absolute;left: 100px;top: 150px'>hello world</div>");
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.type) {
     case "openModal":
       chrome.storage.sync.set({
-          'isModal': true
+          'cbIsModal': true
       });
-      document.body.innerHTML +=
-        '<dialog style="height:300px;" id="cookbook-dialog"><iframe style="height:250px;" id="cookbookFrame"></iframe><div><button>Close</button></div></dialog>';
-      var iframe = document.getElementById("cookbookFrame");
+      document.body.innerHTML +=`<dialog style="height:315px; width:300px; background-color:#F2F2F2;" id="cookbook-dialog">
+          <iframe style="height:290px; width:292px; position:absolute; top:25; left:0" id="cookbookFrame"></iframe>
+          <div style="position:absolute; top:0px; left:5px;"><button>x</button></div></dialog>`;
+      let iframe = document.getElementById("cookbookFrame");
       iframe.src = chrome.extension.getURL("index.html");
       iframe.frameBorder = 0;
-      var dialog = document.querySelector("dialog");
+      let dialog = document.querySelector("dialog");
       dialog.querySelector("button").addEventListener("click", function() {
         dialog.close();
       });
       dialog.showModal();
-    // var iframe = document.createElement('iframe');
-    // iframe.src = chrome.extension.getURL("http://facebook.com");
-    // iframe.frameBorder = 0;
-    // iframe.id = "myFrame";
-    // //$(iframe).hide();//necessary otherwise frame will be visible
-    // $(iframe).appendTo("body");
-    // $('#myModal').modal({
-    //    backdrop: 'static',
-    //    keyboard: false
-    // });
-    // break;
+    case "closeModal":
   }
 });
-
-// const createDictionary = () => {
-// axios.post(`http://${IP}/api/parse`, {
-//     ingredients: parsed,
-//   }).then(results => {
-//         full.forEach((ingredient, index) => {
-//             dictionary[ingredient] = results.data[index];
-//         });
-//         console.log('BEHOLD MY MIGHTY DICTIONARY', dictionary);
-//   }).catch(error => {
-//     console.log('Error in parsing selection:', error);
-//   });
-
-//}
-
-// for (var i = 0; i < elements.length; i++) {
-//     var element = elements[i];
-
-//     for (var j = 0; j < element.childNodes.length; j++) {
-//         var node = element.childNodes[j];
-
-//         if (node.nodeType === 3) {
-//             var text = node.nodeValue;
-//             var replacedText = text.replace(/light brown sugar/gi, '✓ light brown sugar');
-
-//             if (replacedText !== text) {
-//                 element.replaceChild(document.createTextNode(replacedText), node);
-//             }
-//         }
-//     }
-// }
-
-//content script
-// var clickedEl = null;
-
-// document.addEventListener("mousedown", (event) => {
-//     //right click
-
-//     if(event.button == 2) {
-//         clickedEl = event.target;
-//     }
-// }, true);
-
-// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//     // if(request == "getClickedEl") {
-//     //     sendResponse({value: clickedEl.value});
-//     // }
-// });
 
 // Helper functions
 window.parseToArray = string => {
@@ -137,3 +67,8 @@ window.convertFromCan = (str, canOrJar) => {
   let realUnits = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
   return realUnits + str.substring(str.indexOf(canOrJar) + 3);
 };
+
+window.closeModal = () => {
+  let dialog = document.querySelector("dialog");
+  dialog.close();
+}

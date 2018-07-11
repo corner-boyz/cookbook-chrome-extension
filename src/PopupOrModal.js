@@ -5,6 +5,9 @@ import App from './App';
 import Recipe from './client-components/tabs/recipe';
 import { ClipLoader } from 'react-spinners';
 
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import Themes from './theme';
+
 class PopupOrModal extends React.Component {
   constructor(props) {
     super(props);
@@ -12,14 +15,17 @@ class PopupOrModal extends React.Component {
     this.state = {
       isLoading: true,
       isModal: false,
+      theme: Themes.PantryTheme,
     };
+    
+    this.changeTheme = this.changeTheme.bind(this);
   }
 
   componentDidMount() {
-    chrome.storage.sync.get(['isModal'], result => {
-      if (result.isModal) {
+    chrome.storage.sync.get(['cbIsModal'], result => {
+      if (result.cbIsModal) {
         chrome.storage.sync.set({
-          'isModal': false
+          'cbIsModal': false
         });
         this.setState({
           isModal: true,
@@ -36,6 +42,22 @@ class PopupOrModal extends React.Component {
       });
     }, 3000);
   }
+
+  changeTheme(theme) {
+    if (theme === 0) {
+      this.setState({
+        theme: Themes.ListTheme,
+      });
+    } else if (theme === 1) {
+      this.setState({
+        theme: Themes.PantryTheme,
+      });
+    } else {
+      this.setState({
+        theme: Themes.RecipesTheme,
+      });
+    }
+  }
   
 
   
@@ -44,25 +66,18 @@ class PopupOrModal extends React.Component {
       return  <div style={{ width: "20%", margin: "auto" }}>
               <div style={{ position: "absolute", top: "50%" }}>
                <ClipLoader
-                color={'#0000FF'} 
+                color={'orange'} 
                 loading={this.state.isLoading} 
               /></div></div>
     } else {
       if (this.state.isModal) {
-        return <Recipe/>;
+        return <MuiThemeProvider theme={Themes.PantryTheme}><Recipe/></MuiThemeProvider>;
       } else {
-        return <App />;
+        return <MuiThemeProvider theme={this.state.theme}>
+                <App changeTheme={this.changeTheme}/>
+              </MuiThemeProvider>;
       }
     }
-    // });
-    // return (
-    //   <BrowserRouter>
-    //   <div>
-    //     <Route exact path={this.url} component={App} />
-    //     <Route path={`${this.url}/modal`} component={Recipe} />
-    //   </div>
-    //   </BrowserRouter>
-    // )
   }
 }
 
