@@ -70,13 +70,13 @@ class PopupOrModal extends React.Component {
                 loading={this.state.isLoading} 
               /></div></div>
     } else {
-      if (this.state.isModal) {
+      //if (this.state.isModal) {
         return <MuiThemeProvider theme={Themes.PantryTheme}><Recipe/></MuiThemeProvider>;
-      } else {
-        return <MuiThemeProvider theme={this.state.theme}>
-                <App changeTheme={this.changeTheme}/>
-              </MuiThemeProvider>;
-      }
+      // } else {
+      //   return <MuiThemeProvider theme={this.state.theme}>
+      //           <App changeTheme={this.changeTheme}/>
+      //         </MuiThemeProvider>;
+      // }
     }
   }
 }
