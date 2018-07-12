@@ -31,6 +31,8 @@ class Recipe extends React.Component {
     };
 
     this.compare = this.compare.bind(this);
+    this.preventLoadTimeout = this.preventLoadTimeout.bind(this);
+    this.preventSaveTimeout = this.preventSaveTimeout.bind(this);
     this.submitList = this.submitList.bind(this);
     this.toggleEditing = this.toggleEditing.bind(this);
     this.toggleSaving = this.toggleSaving.bind(this);
@@ -39,6 +41,7 @@ class Recipe extends React.Component {
   componentDidMount() {
     this.getSelected();
     this.getEmail();
+    this.preventLoadTimeout();
   }
 
   compare() {
@@ -48,7 +51,7 @@ class Recipe extends React.Component {
         }).then(results => {
           let comparisonArr = [];
           results.data.forEach((comparison, index) => {
-            if (comparison.quantity > 0) {
+            if (comparison.quantity >= 0) {
               this.state.comparisonStyles[index] = {
                 color: '#78AB46'
               }
@@ -124,8 +127,25 @@ class Recipe extends React.Component {
       }
     });
   }
+  
+  preventLoadTimeout() {
+    setTimeout(() => {
+      this.setState({
+        isLoading: false,
+      });
+    }, 3500);
+  }
+
+  preventSaveTimeout() {
+    setTimeout(() => {
+      this.setState({
+        isSaving: false,
+      });
+    }, 3500);
+  }
 
   submitList(entries) {
+    this.preventSaveTimeout();
     let validEntries = entries.filter(entry => entry.quantity > 0);
     this.setState({
       savedNum: validEntries.length,
@@ -149,7 +169,7 @@ class Recipe extends React.Component {
         }).catch((err) => {
           if (err.request._hasError || err.response.request.status === 404) {
             console.log('ERROR purchasing ingredients', err);
-            alert('Trouble connecting to server. Please try again later.');
+            alert('Trouble connecting to the server. Please try again later.');
           }
           else if (err.response) {
             console.log('ERROR converting units', err.response.request.response);
@@ -216,7 +236,11 @@ class Recipe extends React.Component {
         }
         </div>
       </div>);
-    if (this.state.noEmail) {
+    if (!this.state.selected.length && !this.state.isLoading) {
+      return (<div style={{ textAlign: 'center', poisition: 'absolute', marginTop: '40%' }}>
+      <Typography variant="body2"> Use your cursor to select ingredients, then compare to your pantry! </Typography>
+    </div>);
+    } else if (this.state.noEmail) {
       return (<div style={{ textAlign: 'center', poisition: 'absolute', marginTop: '40%' }}>
                 <Typography variant="body2"> Please log in to your Flex Chef account. </Typography>
               </div>);

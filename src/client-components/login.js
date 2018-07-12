@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import { Button, Paper, TextField, Typography } from '@material-ui/core';
+import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
+import { PhoneAndroid } from '@material-ui/icons';
 import styles from './styles';
 
 import IP from '../IP';
@@ -107,6 +108,10 @@ class Login extends React.Component {
           </div>
         </div>
         </Paper>
+      <Grid container onClick={() => window.open('https://play.google.com/store/apps/details?id=org.chuiohrobinson.flexchef')}>
+        <Grid item xs={10} style={{ textAlign: 'right', marginTop: '2px' }}><Typography variant="body1" color="inherit">Check out our mobile app!</Typography></Grid>
+        <Grid item xs={2} style={{ textAlign: 'left' }}><PhoneAndroid /></Grid>
+      </Grid>
       </div>
     )
   }

@@ -13,6 +13,10 @@ module.exports = {
   textField:{
     fontSize: 12
   },
+  boxTextField: {
+    fontSize: 12,
+    boxShadow: 'none'
+  },
   warningText: {
     color: '#ff0000'
   },

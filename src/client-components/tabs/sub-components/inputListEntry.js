@@ -19,6 +19,7 @@ class InputListEntry extends React.Component {
       quantity: null,
       unit: null,
       ingredient: '',
+      unparsed: '',
     }
 
     this.units = {
@@ -57,6 +58,13 @@ class InputListEntry extends React.Component {
     this.setState({ anchorEl: null });
   };
 
+  handleKeyDown = (e) => {
+    if(e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      this.props.submitUnparsed();
+    }
+  }
+
   handleQuantity = (value, index) => {
     this.setState({
       quantity: value, 
@@ -79,10 +87,34 @@ class InputListEntry extends React.Component {
     this.props.handleIngredient(value, index);
   };
 
+  handleUnparsed = (e) => {
+    let code = e.keyCode || e.which;
+    if (code == 13) { 
+      this.props.submitUnparsed();
+    } else {
+      this.setState({
+        unparsed: e.target.value,
+      });
+      this.props.handleUnparsed(e.target.value);
+    }
+  }
+
   //====================================================
   render() {
     const { anchorEl } = this.state;
-    return (
+    if (this.props.type === 'empty') {
+      return (<TextField
+              disableUnderline={true}
+              color='primary'
+              value={this.state.unparsed}
+              style={{ height: 40, width: '100%' }}
+              placeholder='Ex: "2 pound salmon"'
+              onChange={(e) => this.handleUnparsed(e)}
+              onKeyDown={this.handleKeyDown}
+              inputProps={{style: styles.boxTextField}}
+            />);
+    } else {
+      return (
       <div style={styles.container}>
       <Grid container>
       {(this.props.type === 'given' || this.props.type === 'editing') ? 
@@ -127,7 +159,6 @@ class InputListEntry extends React.Component {
           placeholder='Ingredient'
           onChange={(e) => this.handleIngredient(e.target.value, this.props.index)}
           inputProps={{style: styles.textField}}
-          floatingLabelFocusStyle={{ color: 'orange' }}
         />)} 
           </Grid>
         </Grid>
@@ -150,7 +181,7 @@ class InputListEntry extends React.Component {
           ))}
         </Menu>
       </div>
-    )
+    )}
   }
 }
 

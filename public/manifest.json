@@ -29,14 +29,18 @@
   },
   "version": "1.0.0",
   "permissions": [
-    "https://*/",
+    "http://cookbookserver.herokuapp.com/*",
+    "http://*/*",
+    "https://*/*",
     "http://*/",
+    "https://*/",
     "<all_urls>",
     "contextMenus",
     "storage",
     "tabs"
   ],
   "web_accessible_resources" : [
+    "http://cookbookserver.herokuapp.com/*",
     "*.html"
 ]
 }

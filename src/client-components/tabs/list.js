@@ -153,7 +153,7 @@ class List extends React.Component {
     return (
         <div style={styles.container}>
           <ListWrapper>
-            <ListItemText primary='My Grocery List:' style={{ width: '70%', margin: 'auto' }}/>
+            <ListItemText primary='Saved Grocery List:' style={{ width: '70%', margin: 'auto' }}/>
             <div style={{ height: 142.5, maxHeight: 142.5, overflow: 'auto'}}>
               <div style={{ width: '80%', margin: 'auto' }}>
                 {this.state.isLoading ? 
@@ -207,13 +207,16 @@ class List extends React.Component {
             </Button>)
           }
           </div>
-          <div style={{ width: '90%', margin: 'auto' }}>
-          <InputList number={1} 
-                   type='empty'
-                   endpoint='grocerylist'
-                   email={this.props.email}
-                   getIngredients={this.getGroceryList}
-                   toggleEditing={this.toggleEditing}/>
+          <div style={{ width: '90%', margin: 'auto', textAlign: 'left' }}>
+          <Typography style={{ width: '85%', margin: 'auto' }} variant='body1'>Add to Grocery List:</Typography>
+            <div style={{ width: '86%', margin: 'auto' }}>
+            <InputList number={1} 
+                    type='empty'
+                    endpoint='grocerylist'
+                    email={this.props.email}
+                    getIngredients={this.getGroceryList}
+                    toggleEditing={this.toggleEditing}/>
+            </div>
           </div>
           </div>
         </div>

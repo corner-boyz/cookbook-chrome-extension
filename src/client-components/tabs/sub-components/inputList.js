@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { Button, Typography } from '@material-ui/core';
+import { ClipLoader } from 'react-spinners';
 import InputListEntry from './inputListEntry';
 import styles from '../../styles';
 
@@ -16,6 +17,7 @@ class IngredientList extends React.Component {
 
     this.state = {
       entries: [],
+      unparsed: '',
       style: {},
       secondaryStyle: {},
     }
@@ -24,9 +26,11 @@ class IngredientList extends React.Component {
     this.handleQuantity = this.handleQuantity.bind(this);
     this.handleUnit = this.handleUnit.bind(this);
     this.handleIngredient = this.handleIngredient.bind(this);
+    this.handleUnparsed = this.handleUnparsed.bind(this);
     this.resetEntries = this.resetEntries.bind(this);
     this.setStyle = this.setStyle.bind(this);
     this.submitIngredients = this.submitIngredients.bind(this);
+    this.submitUnparsed = this.submitUnparsed.bind(this);
 
   }
   //====================================================
@@ -87,6 +91,12 @@ class IngredientList extends React.Component {
     });
   };
 
+  handleUnparsed = (value) => {
+    this.setState({
+      unparsed: value,
+    });
+  };
+
   resetEntries() {
     this.setState({
       entries: [],
@@ -138,6 +148,41 @@ class IngredientList extends React.Component {
       }
     });
   }
+
+  submitUnparsed() {
+    this.resetEntries();
+    axios.post(`http://${IP}/api/parse`, {
+      ingredients: [ this.state.unparsed ],
+    }).then((results) => {
+      let parsed = results.data.slice();
+      if (this.props.endpoint === 'grocerylist') {
+        parsed.forEach(ingredient => {
+          ingredient.ispurchased = false
+        });
+      }
+      axios.post(`http://${IP}/api/${this.props.endpoint || 'ingredients'}`, {
+        ingredients: parsed,
+        email: this.props.email,
+        shouldReplace: false,
+      }).then(() => {
+        this.props.getIngredients();
+        if (!this.state.entries.length) {
+          this.createEntries();
+        }
+      }).catch((err) => {
+        if (err.request._hasError || err.response.request.status === 404) {
+          console.log('ERROR purchasing ingredients', err);
+          alert('Trouble connecting to server. Please try again later.');
+        }
+        else if (err.response) {
+          console.log('ERROR converting units', err.response.request.response);
+          alert('Invalid unit conversion: ' + err.response.request.response);
+        }
+      });
+    }).catch((err) => {
+      console.log('ERROR parsing text', err);
+    });
+  }
   //====================================================
   render() {
     let button = (() => {
@@ -170,8 +215,7 @@ class IngredientList extends React.Component {
                           color='primary'
                           size='small'
                           onClick={() => {
-                            this.submitIngredients();
-                            this.resetEntries();
+                            this.submitUnparsed();
                           }}>
                           Add
                         </Button>
@@ -183,17 +227,16 @@ class IngredientList extends React.Component {
         <div> 
         {this.state.entries.length ? (null) : 
         <div style={{ height: 50, textAlign: 'center' }}>
-          <br></br>
-          <Typography variant="body1" color="inherit">Adding...</Typography>
-          <br></br>
-        </div>
-        }
+          <ClipLoader color={'orange'} />
+        </div>}
         {this.state.entries.map((entry, index) => {
           if (entry.quantity !== 0 || this.props.type === 'empty') {
             return (<span><InputListEntry
             handleQuantity={this.handleQuantity}
             handleUnit={this.handleUnit}
             handleIngredient={this.handleIngredient}
+            handleUnparsed={this.handleUnparsed}
+            submitUnparsed={this.submitUnparsed}
             index={index}
             type={this.props.type}
             given={entry}

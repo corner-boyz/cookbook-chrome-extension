@@ -81,8 +81,8 @@ class Ingredients extends React.Component {
       </div>)
       : (<div style={styles.container}>
         <List>
-          <ListItemText primary='My Ingredients:' style={{ width: '70%', margin: 'auto' }}/> 
-          <div style={{ height: 200, maxHeight: 200, overflow: 'auto'}}>
+          <ListItemText primary='Saved Ingredients:' style={{ width: '70%', margin: 'auto' }}/> 
+          <div style={{ height: 190, maxHeight: 190, overflow: 'auto'}}>
           {this.state.isLoading ? 
                 (<div style={{ width: "20%", margin: "auto" }}>
                 <div style={{ position: "absolute", top: "50%" }}>
@@ -98,7 +98,7 @@ class Ingredients extends React.Component {
             </div>)}
           </div>       
         </List>
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', marginBottom: 10 }}>
           <Button
             variant='contained' 
             color='primary'
@@ -107,14 +107,17 @@ class Ingredients extends React.Component {
             Edit
           </Button> 
         </div>
-        <div style={{ width: '90%', margin: 'auto' }}>
-        <InputList number={1} 
-                   type='empty'
-                   endpoint='ingredients'
-                   email={this.props.email}
-                   getIngredients={this.getIngredients}
-                   toggleEditing={this.toggleEditing}/>
-        </div>
+        <div style={{ width: '90%', margin: 'auto', textAlign: 'left' }}>
+          <Typography style={{ width: '85%', margin: 'auto' }} variant='body1'>Add to Pantry:</Typography>
+            <div style={{ width: '86%', margin: 'auto' }}>
+            <InputList number={1} 
+                    type='empty'
+                    endpoint='ingredients'
+                    email={this.props.email}
+                    getIngredients={this.getIngredients}
+                    toggleEditing={this.toggleEditing}/>
+            </div>
+          </div>
       </div>);
     
 

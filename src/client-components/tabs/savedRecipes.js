@@ -60,8 +60,8 @@ class SavedRecipes extends React.Component {
       return (
     <div style={styles.container}>
         <List>
-          <ListItemText primary='My Saved Recipes:' style={{ width: '70%', margin: 'auto' }}/> 
-          <div style={{ height: 322, maxHeight: 322, overflow: 'auto'}}>
+          <ListItemText primary='Saved Recipes:' style={{ width: '70%', margin: 'auto' }}/> 
+          <div style={{ height: 335, maxHeight: 335, overflow: 'auto'}}>
             {this.state.isLoading ? 
             (<div style={{ width: "20%", margin: "auto" }}>
             <div style={{ position: "absolute", top: "50%" }}>
