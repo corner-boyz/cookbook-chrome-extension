@@ -45,7 +45,7 @@ class Recipe extends React.Component {
   }
 
   compare() {
-    axios.post(`http://${IP}/api/compareExtension`, {
+    axios.post(`https://${IP}/api/compareExtension`, {
           recipe: this.state.selected,
           ingredients: this.state.ingredients,
         }).then(results => {
@@ -89,7 +89,7 @@ class Recipe extends React.Component {
   }
 
   getGroceryList(email) {
-    axios.get(`http://${IP}/api/grocerylist/${email}`) 
+    axios.get(`https://${IP}/api/grocerylist/${email}`) 
       .then(results => {
         this.setState({
           list: results.data,
@@ -100,7 +100,7 @@ class Recipe extends React.Component {
   }
 
   getIngredients(email) {
-    axios.get(`http://${IP}/api/ingredients/${email}`) 
+    axios.get(`https://${IP}/api/ingredients/${email}`) 
       .then(results => {
         this.setState({
           ingredients: results.data,
@@ -115,7 +115,7 @@ class Recipe extends React.Component {
     chrome.storage.sync.get(['cbSelected'], result => {
       console.log('SELECTION RESULTS', result);
       if (result.cbSelected.ingredients) {
-        axios.post(`http://${IP}/api/parse`, {
+        axios.post(`https://${IP}/api/parse`, {
           ingredients: result.cbSelected.ingredients,
         }).then(results => {
           this.setState({
@@ -139,7 +139,7 @@ class Recipe extends React.Component {
   preventSaveTimeout() {
     setTimeout(() => {
       this.setState({
-        isSaving: false,
+        saved: true,
       });
     }, 3500);
   }
@@ -150,7 +150,7 @@ class Recipe extends React.Component {
     this.setState({
       savedNum: validEntries.length,
     });
-    axios.post(`http://${IP}/api/combineExtension`, {
+    axios.post(`https://${IP}/api/combineExtension`, {
       ingredients: entries,
       oldIngredients: this.state.list
     }).then(results => {
@@ -158,7 +158,7 @@ class Recipe extends React.Component {
         newList.forEach(ingredient => {
           ingredient.ispurchased = false;
         });
-        axios.post(`http://${IP}/api/grocerylist`, {
+        axios.post(`https://${IP}/api/grocerylist`, {
           ingredients: newList,
           email: this.state.email,
           shouldReplace: true,
