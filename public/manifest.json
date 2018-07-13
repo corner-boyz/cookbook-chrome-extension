@@ -27,7 +27,7 @@
     "scripts": ["background.js"],
     "persistent": false
   },
-  "version": "1.0.2",
+  "version": "1.0.4",
   "permissions": [
     "http://cookbookserver.herokuapp.com/*",
     "http://*/*",

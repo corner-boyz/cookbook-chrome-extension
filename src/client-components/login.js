@@ -17,11 +17,20 @@ class Login extends React.Component {
       password: '',
       wrongEmailOrPass: false, 
     }
+
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
   //====================================================
   componentDidMount() {
   }
   //====================================================
+  handleKeyDown = (e) => {
+    if(e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      this.submitLogin();
+    }
+  }
+  
   redirectToSignup(){
     this.props.changeScreen('signup');
   }
@@ -96,6 +105,7 @@ class Login extends React.Component {
             secureTextEntry={true}
             onChange={this.updatePassword.bind(this)}
             inputProps={{style: styles.textField}}
+            onKeyDown={this.handleKeyDown}
           />
           <div style={{ textAlign: 'center'}}>
             <Button 

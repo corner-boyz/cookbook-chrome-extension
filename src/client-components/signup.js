@@ -21,10 +21,19 @@ class Signup extends React.Component {
         notMatching: false,
         tooShort: false,
     }
+
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.submitSignup = this.submitSignup.bind(this);
 }
 
   componentDidMount() {
+  }
+
+  handleKeyDown = (e) => {
+    if(e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      this.submitSignup();
+    }
   }
 
   redirectToLogin(){
@@ -128,6 +137,7 @@ class Signup extends React.Component {
           type='password'
           inputProps={{style: styles.textField}}
           onChange={this.updateConfirmedPassword.bind(this)}
+          onKeyDown={this.handleKeyDown}
         />
           <div style={{ textAlign: 'center'}}>
             <Button 
