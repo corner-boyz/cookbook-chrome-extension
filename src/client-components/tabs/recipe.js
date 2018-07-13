@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { Button, List, ListItemText, Typography } from '@material-ui/core';
+import { ClipLoader } from 'react-spinners';
 import InputList from './sub-components/inputList';
 import styles from '../styles';
 
@@ -30,6 +31,8 @@ class Recipe extends React.Component {
     };
 
     this.compare = this.compare.bind(this);
+    this.preventLoadTimeout = this.preventLoadTimeout.bind(this);
+    this.preventSaveTimeout = this.preventSaveTimeout.bind(this);
     this.submitList = this.submitList.bind(this);
     this.toggleEditing = this.toggleEditing.bind(this);
     this.toggleSaving = this.toggleSaving.bind(this);
@@ -38,16 +41,17 @@ class Recipe extends React.Component {
   componentDidMount() {
     this.getSelected();
     this.getEmail();
+    this.preventLoadTimeout();
   }
 
   compare() {
-    axios.post(`http://${IP}/api/compareExtension`, {
+    axios.post(`https://${IP}/api/compareExtension`, {
           recipe: this.state.selected,
           ingredients: this.state.ingredients,
         }).then(results => {
           let comparisonArr = [];
           results.data.forEach((comparison, index) => {
-            if (comparison.quantity > 0) {
+            if (comparison.quantity >= 0) {
               this.state.comparisonStyles[index] = {
                 color: '#78AB46'
               }
@@ -85,7 +89,7 @@ class Recipe extends React.Component {
   }
 
   getGroceryList(email) {
-    axios.get(`http://${IP}/api/grocerylist/${email}`) 
+    axios.get(`https://${IP}/api/grocerylist/${email}`) 
       .then(results => {
         this.setState({
           list: results.data,
@@ -96,7 +100,7 @@ class Recipe extends React.Component {
   }
 
   getIngredients(email) {
-    axios.get(`http://${IP}/api/ingredients/${email}`) 
+    axios.get(`https://${IP}/api/ingredients/${email}`) 
       .then(results => {
         this.setState({
           ingredients: results.data,
@@ -111,7 +115,7 @@ class Recipe extends React.Component {
     chrome.storage.sync.get(['cbSelected'], result => {
       console.log('SELECTION RESULTS', result);
       if (result.cbSelected.ingredients) {
-        axios.post(`http://${IP}/api/parse`, {
+        axios.post(`https://${IP}/api/parse`, {
           ingredients: result.cbSelected.ingredients,
         }).then(results => {
           this.setState({
@@ -123,13 +127,30 @@ class Recipe extends React.Component {
       }
     });
   }
+  
+  preventLoadTimeout() {
+    setTimeout(() => {
+      this.setState({
+        isLoading: false,
+      });
+    }, 3500);
+  }
+
+  preventSaveTimeout() {
+    setTimeout(() => {
+      this.setState({
+        saved: true,
+      });
+    }, 3500);
+  }
 
   submitList(entries) {
+    this.preventSaveTimeout();
     let validEntries = entries.filter(entry => entry.quantity > 0);
     this.setState({
       savedNum: validEntries.length,
     });
-    axios.post(`http://${IP}/api/combineExtension`, {
+    axios.post(`https://${IP}/api/combineExtension`, {
       ingredients: entries,
       oldIngredients: this.state.list
     }).then(results => {
@@ -137,7 +158,7 @@ class Recipe extends React.Component {
         newList.forEach(ingredient => {
           ingredient.ispurchased = false;
         });
-        axios.post(`http://${IP}/api/grocerylist`, {
+        axios.post(`https://${IP}/api/grocerylist`, {
           ingredients: newList,
           email: this.state.email,
           shouldReplace: true,
@@ -145,8 +166,15 @@ class Recipe extends React.Component {
           this.setState({
             saved: true
           });
-        }).catch((error) => {
-          console.log('Error in submitting list', error);
+        }).catch((err) => {
+          if (err.request._hasError || err.response.request.status === 404) {
+            console.log('ERROR purchasing ingredients', err);
+            alert('Trouble connecting to the server. Please try again later.');
+          }
+          else if (err.response) {
+            console.log('ERROR converting units', err.response.request.response);
+            alert('Invalid unit conversion', err.response.request.response);
+          }
         });
     }).catch((error) => {
       console.log('Error in converting list', error);
@@ -201,20 +229,35 @@ class Recipe extends React.Component {
             color='primary'
             size='small'
             onClick={this.toggleEditing}
-          >
+            >
           Compare
           </Button>)
           :(null)
         }
         </div>
       </div>);
-    if (this.state.noEmail) {
-      return <p> Please log in to your CookBook account! </p>
+    if (!this.state.selected.length && !this.state.isLoading) {
+      return (<div style={{ textAlign: 'center', poisition: 'absolute', marginTop: '40%' }}>
+      <Typography variant="body2"> Use your cursor to select ingredients, then compare to your pantry! </Typography>
+    </div>);
+    } else if (this.state.noEmail) {
+      return (<div style={{ textAlign: 'center', poisition: 'absolute', marginTop: '40%' }}>
+                <Typography variant="body2"> Please log in to your Flex Chef account. </Typography>
+              </div>);
     } else if (this.state.isSaving) {
       if (this.state.saved) {
-        return <p> {this.state.savedNum} ingredients saved to your grocery list! </p>
+        return (<div style={{ textAlign: 'center', poisition: 'absolute', marginTop: '18%' }}>
+                <img src="./logo.png" height="120" width="120"></img>
+                <Typography variant="body2"> {this.state.savedNum} {this.state.savedNum === 1 ? ('ingredient') : ('ingredients')} saved to your grocery list! </Typography>
+              </div>);
       } else {
-        return <p> Saving... </p>
+        return (<div style={{ textAlign: 'center', poisition: 'absolute', marginTop: '18%' }}>
+              <img src="./logo.png" height="120" width="120"></img>
+                <Typography variant="body2"> Saving...</Typography>
+                <div style={{ width: "20%", margin: "auto" }}>
+                  <ClipLoader color={'orange'}/>
+                </div>
+              </div>);
       }
     } else {
       return selectedScreen;

@@ -1,6 +1,6 @@
 {
-  "short_name": "Cook Book",
-  "name": "Cook Book Chrome Extension",
+  "short_name": "Flex Chef",
+  "name": "Flex Chef",
   "manifest_version": 2,
   "browser_action": {
     "default_icon": {
@@ -8,7 +8,7 @@
       "38": "icons/icon38.png"
     },
     "default_popup": "index.html",
-    "default_title": "Cook Book"
+    "default_title": "Flex Chef"
   },
   "icons": {
     "16": "icons/icon16.png",
@@ -27,16 +27,20 @@
     "scripts": ["background.js"],
     "persistent": false
   },
-  "version": "1.0.0",
+  "version": "1.0.4",
   "permissions": [
-    "https://*/",
+    "http://cookbookserver.herokuapp.com/*",
+    "http://*/*",
+    "https://*/*",
     "http://*/",
+    "https://*/",
     "<all_urls>",
     "contextMenus",
     "storage",
     "tabs"
   ],
   "web_accessible_resources" : [
+    "http://cookbookserver.herokuapp.com/*",
     "*.html"
 ]
 }

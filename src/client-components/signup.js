@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Button, Paper, TextField, Typography } from '@material-ui/core';
+import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
+import { PhoneAndroid } from '@material-ui/icons';
 import styles from './styles';
 
 import axios from 'axios';
@@ -20,10 +21,19 @@ class Signup extends React.Component {
         notMatching: false,
         tooShort: false,
     }
+
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.submitSignup = this.submitSignup.bind(this);
 }
 
   componentDidMount() {
+  }
+
+  handleKeyDown = (e) => {
+    if(e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      this.submitSignup();
+    }
   }
 
   redirectToLogin(){
@@ -85,7 +95,7 @@ class Signup extends React.Component {
     return (
       <div style={{ width: 218, backgroundImage: 'url("./4.jpg")', border: '1px solid lightgray', textAlign: 'center' }}>
         <div style={{ marginTop: 10}}>
-          <Typography variant="title" color="inherit">Flex Chef</Typography>
+          <img src="./logo.png" height="120" width="120"></img>
           <Typography variant="body2" color="inherit">
             <span style={{ marginRight: 5 }} onClick={this.redirectToLogin.bind(this)}>Login</span> 
             <span style={{ marginLeft: 5, textDecoration: 'underline' }}>Sign Up</span>
@@ -127,6 +137,7 @@ class Signup extends React.Component {
           type='password'
           inputProps={{style: styles.textField}}
           onChange={this.updateConfirmedPassword.bind(this)}
+          onKeyDown={this.handleKeyDown}
         />
           <div style={{ textAlign: 'center'}}>
             <Button 
@@ -141,6 +152,10 @@ class Signup extends React.Component {
         </Paper>
         <div>
       </div> 
+      <Grid container onClick={() => window.open('https://play.google.com/store/apps/details?id=org.chuiohrobinson.flexchef')}>
+        <Grid item xs={10} style={{ textAlign: 'right', marginTop: '2px' }}><Typography variant="body1" color="inherit">Check out our mobile app!</Typography></Grid>
+        <Grid item xs={2} style={{ textAlign: 'left' }}><PhoneAndroid /></Grid>
+      </Grid>
     </div>
     )
   }

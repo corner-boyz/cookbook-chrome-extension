@@ -30,7 +30,7 @@ class List extends React.Component {
     this.deleteSelected = this.deleteSelected.bind(this);
     this.getGroceryList = this.getGroceryList.bind(this);
     this.groceryListToPantry = this.groceryListToPantry.bind(this);
-    this.postToGroceryList = this.postToGroceryList.bind(this);
+    //this.postToGroceryList = this.postToGroceryList.bind(this);
 
     this.handleCheck = this.handleCheck.bind(this);
     this.handleSwitch = this.handleSwitch.bind(this);
@@ -91,8 +91,15 @@ class List extends React.Component {
     }) 
     .then(() => {
       this.getGroceryList();
-    }).catch(error => {
-      alert('Could not convert units from your grocery list to your pantry. Please edit your ingredients and try again.');
+    }).catch(err => {
+      if (err.request._hasError || err.response.request.status === 404) {
+        console.log('ERROR purchasing ingredients', err);
+        alert('Trouble connecting to server. Please try again later.');
+      }
+      else if (err.response) {
+        console.log('ERROR converting units', err.response.request.response);
+        alert('Invalid unit conversion', err.response.request.response);
+      }
     });
     }
     
@@ -127,27 +134,26 @@ class List extends React.Component {
     });
   }
 
-
-  postToGroceryList() {
-    axios.post(`http://${IP}/api/parse/`,
-    { ingredients: [this.state.item] }) 
-    .then((results) => {
-      let newList = this.state.list.slice();
-      newList.push(results.data);
-      this.setState({
-        list: this.state.list.concat(results.data),
-      });
-    }).catch(error => {
-      console.log('Error in posting to grocery list:', error);
-    });
-  }
+  // postToGroceryList() {
+  //   axios.post(`http://${IP}/api/parse/`,
+  //   { ingredients: [this.state.item] }) 
+  //   .then((results) => {
+  //     let newList = this.state.list.slice();
+  //     newList.push(results.data);
+  //     this.setState({
+  //       list: this.state.list.concat(results.data),
+  //     });
+  //   }).catch(error => {
+  //     console.log('Error in posting to grocery list:', error);
+  //   });
+  // }
   
   //====================================================
   render() {
     return (
         <div style={styles.container}>
           <ListWrapper>
-            <ListItemText primary='My Grocery List:' style={{ width: '70%', margin: 'auto' }}/>
+            <ListItemText primary='Saved Grocery List:' style={{ width: '70%', margin: 'auto' }}/>
             <div style={{ height: 142.5, maxHeight: 142.5, overflow: 'auto'}}>
               <div style={{ width: '80%', margin: 'auto' }}>
                 {this.state.isLoading ? 
@@ -201,13 +207,16 @@ class List extends React.Component {
             </Button>)
           }
           </div>
-          <div style={{ width: '90%', margin: 'auto' }}>
-          <InputList number={1} 
-                   type='empty'
-                   endpoint='grocerylist'
-                   email={this.props.email}
-                   getIngredients={this.getGroceryList}
-                   toggleEditing={this.toggleEditing}/>
+          <div style={{ width: '90%', margin: 'auto', textAlign: 'left' }}>
+          <Typography style={{ width: '85%', margin: 'auto' }} variant='body1'>Add to Grocery List:</Typography>
+            <div style={{ width: '86%', margin: 'auto' }}>
+            <InputList number={1} 
+                    type='empty'
+                    endpoint='grocerylist'
+                    email={this.props.email}
+                    getIngredients={this.getGroceryList}
+                    toggleEditing={this.toggleEditing}/>
+            </div>
           </div>
           </div>
         </div>

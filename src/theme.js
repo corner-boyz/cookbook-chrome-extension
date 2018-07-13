@@ -10,8 +10,8 @@ const ListTheme = createMuiTheme({
       secondary: { 
         main: grey[300],
         contrastText: '#fff',
-      }
-  },
+      },
+    },
 });
 
 const PantryTheme = createMuiTheme({

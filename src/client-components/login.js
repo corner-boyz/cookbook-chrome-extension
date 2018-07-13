@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import { Button, Paper, TextField, Typography } from '@material-ui/core';
+import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
+import { PhoneAndroid } from '@material-ui/icons';
 import styles from './styles';
 
 import IP from '../IP';
@@ -16,11 +17,20 @@ class Login extends React.Component {
       password: '',
       wrongEmailOrPass: false, 
     }
+
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
   //====================================================
   componentDidMount() {
   }
   //====================================================
+  handleKeyDown = (e) => {
+    if(e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      this.submitLogin();
+    }
+  }
+  
   redirectToSignup(){
     this.props.changeScreen('signup');
   }
@@ -71,7 +81,7 @@ class Login extends React.Component {
     return (
       <div style={{ width: 218, backgroundImage: 'url("./4.jpg")', border: '1px solid lightgray', textAlign: 'center' }}>
         <div style={{ marginTop: 10}}>
-          <Typography variant="title" color="inherit">Flex Chef</Typography>
+          <img src="./logo.png" height="120" width="120"></img>
           <Typography variant="body2" color="inherit">
             <span style={{ marginRight: 5, textDecoration: 'underline' }}>Login</span> 
             <span style={{ marginLeft: 5 }} onClick={this.redirectToSignup.bind(this)}>Sign Up</span>
@@ -95,6 +105,7 @@ class Login extends React.Component {
             secureTextEntry={true}
             onChange={this.updatePassword.bind(this)}
             inputProps={{style: styles.textField}}
+            onKeyDown={this.handleKeyDown}
           />
           <div style={{ textAlign: 'center'}}>
             <Button 
@@ -107,17 +118,10 @@ class Login extends React.Component {
           </div>
         </div>
         </Paper>
-        {/* <p>
-          Don't have an account?
-        </p>
-        <Button 
-          variant='contained' 
-          color='secondary'
-          size='small'
-          onClick={this.redirectToSignup.bind(this)}
-          >
-        Sign Up
-        </Button> */}
+      <Grid container onClick={() => window.open('https://play.google.com/store/apps/details?id=org.chuiohrobinson.flexchef')}>
+        <Grid item xs={10} style={{ textAlign: 'right', marginTop: '2px' }}><Typography variant="body1" color="inherit">Check out our mobile app!</Typography></Grid>
+        <Grid item xs={2} style={{ textAlign: 'left' }}><PhoneAndroid /></Grid>
+      </Grid>
       </div>
     )
   }
