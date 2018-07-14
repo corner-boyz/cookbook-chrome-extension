@@ -1,8 +1,6 @@
-/* global chrome */
-
 import React from 'react';
 
-import { Button, Checkbox, ListItemText, Switch, TextField, Typography } from '@material-ui/core';
+import { Button, Checkbox, ListItemText, Switch, Typography } from '@material-ui/core';
 import { ClipLoader } from 'react-spinners';
 import ListWrapper from '@material-ui/core/List';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -30,7 +28,6 @@ class List extends React.Component {
     this.deleteSelected = this.deleteSelected.bind(this);
     this.getGroceryList = this.getGroceryList.bind(this);
     this.groceryListToPantry = this.groceryListToPantry.bind(this);
-    //this.postToGroceryList = this.postToGroceryList.bind(this);
 
     this.handleCheck = this.handleCheck.bind(this);
     this.handleSwitch = this.handleSwitch.bind(this);
@@ -133,20 +130,6 @@ class List extends React.Component {
       item: e.target.value,
     });
   }
-
-  // postToGroceryList() {
-  //   axios.post(`http://${IP}/api/parse/`,
-  //   { ingredients: [this.state.item] }) 
-  //   .then((results) => {
-  //     let newList = this.state.list.slice();
-  //     newList.push(results.data);
-  //     this.setState({
-  //       list: this.state.list.concat(results.data),
-  //     });
-  //   }).catch(error => {
-  //     console.log('Error in posting to grocery list:', error);
-  //   });
-  // }
   
   //====================================================
   render() {
@@ -218,8 +201,8 @@ class List extends React.Component {
                     toggleEditing={this.toggleEditing}/>
             </div>
           </div>
-          </div>
         </div>
+      </div>
     )
   }
 }

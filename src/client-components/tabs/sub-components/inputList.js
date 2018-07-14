@@ -2,10 +2,9 @@
 
 import React from 'react';
 
-import { Button, Typography } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { ClipLoader } from 'react-spinners';
 import InputListEntry from './inputListEntry';
-import styles from '../../styles';
 
 import IP from '../../../IP';
 import axios from 'axios';
@@ -37,12 +36,6 @@ class IngredientList extends React.Component {
   componentDidMount() {
     this.createEntries();
     this.setStyle();
-  }
-
-  closeModal() {
-    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, {type: "closeModal"});
-     });
   }
 
   createEntries() {
@@ -113,10 +106,12 @@ class IngredientList extends React.Component {
       case 'editing': this.setState({
         style: { height: 200, maxHeight: 200, overflow: 'auto' }
       }); 
+        break;
       case 'given': this.setState({
         style: { height: 200, maxHeight: 200, overflow: 'auto' },
         secondaryStyle: { width: '80%', margin: 'auto' }
       });
+        break;
       default: //do nothing
     }
   }

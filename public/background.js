@@ -1,12 +1,12 @@
 /* global chrome */
 
 chrome.runtime.onMessage.addListener(request => {
-    console.log('Selected:', request);
     chrome.storage.sync.set({
         'cbSelected': request
     });
 });
 
+// Right-click menu
 const parent = chrome.contextMenus.create({
     id: 'Flex Chef',
     title: 'Flex Chef',
@@ -27,6 +27,7 @@ const parent = chrome.contextMenus.create({
     contexts: ['all'],
   });
 
+// Events to be triggered on right-clicks
 chrome.contextMenus.onClicked.addListener(clickData => {
     if (clickData.menuItemId === 'Check Pantry') {
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
@@ -44,15 +45,15 @@ chrome.contextMenus.onClicked.addListener(clickData => {
             
             chrome.storage.sync.get(['cbLogin'], result => {
                 const { email } = result.cbLogin;
-                let params = { 
-                email: email,
-                recipe: {
-                    id: url,
-                    title: title,
-                    sourceUrl: url,
-                    image: 'https://image.flaticon.com/icons/svg/60/60435.svg',
-                },
-                isExtension: true
+                const params = { 
+                    email: email,
+                    recipe: {
+                        id: url,
+                        title: title,
+                        sourceUrl: url,
+                        image: 'https://image.flaticon.com/icons/svg/60/60435.svg',
+                    },
+                    isExtension: true
                 };
                 http.send(JSON.stringify(params));
             });

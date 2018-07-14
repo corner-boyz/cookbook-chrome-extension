@@ -1,5 +1,6 @@
 /* global chrome */
 
+// Gets selected text and converts it into an array, then sends to background script
 window.addEventListener("mouseup", () => {
   let selectedText = window
     .getSelection()
@@ -14,9 +15,9 @@ window.addEventListener("mouseup", () => {
   }
 });
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  switch (request.type) {
-    case "openModal":
+// Listening for a right-click command to open the modal window
+chrome.runtime.onMessage.addListener(request => {
+  if (request.type === "openModal") {
       chrome.storage.sync.set({
           'cbIsModal': true
       });
@@ -31,7 +32,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         dialog.close();
       });
       dialog.showModal();
-    case "closeModal":
   }
 });
 
@@ -67,8 +67,3 @@ window.convertFromCan = (str, canOrJar) => {
   let realUnits = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
   return realUnits + str.substring(str.indexOf(canOrJar) + 3);
 };
-
-window.closeModal = () => {
-  let dialog = document.querySelector("dialog");
-  dialog.close();
-}

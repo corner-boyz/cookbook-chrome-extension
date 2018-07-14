@@ -11,7 +11,7 @@ import IP from '../../IP';
 import axios from 'axios';
 
 //==================================================== 
-class Recipe extends React.Component {
+class Selected extends React.Component {
   constructor(props) {
     super(props);
 
@@ -265,4 +265,4 @@ class Recipe extends React.Component {
   }
 }
 
-export default Recipe;
+export default Selected;
