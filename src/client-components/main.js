@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-import { AppBar, IconButton, Menu, MenuItem, Paper, Tab, Tabs } from '@material-ui/core';
+import { AppBar, IconButton, Menu, MenuItem, Tab, Tabs } from '@material-ui/core';
 import { AccountCircle, LocalMall, LocalDining, ShoppingCart } from '@material-ui/icons';
 import styles from './styles';
 
 import SavedRecipes from './tabs/savedRecipes';
-import Ingredients from './tabs/ingredients';
+import Pantry from './tabs/pantry';
 import List from './tabs/list';
 
 //==================================================== 
@@ -79,9 +79,9 @@ class Main extends React.Component {
     let currentScreen = (() => {
         switch(this.state.screen) {
             case 0: return <List email={this.props.email} name={this.props.name}/>;
-            case 1: return <Ingredients email={this.props.email} name={this.props.name}/>;
+            case 1: return <Pantry email={this.props.email} name={this.props.name}/>;
             case 2: return <SavedRecipes email={this.props.email} name={this.props.name}/>;
-            default: return <Ingredients email={this.props.email} name={this.props.name}/>;
+            default: return <Pantry email={this.props.email} name={this.props.name}/>;
         }
     })();
     const { anchorEl } = this.state;

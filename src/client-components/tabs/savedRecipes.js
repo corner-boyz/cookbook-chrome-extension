@@ -1,10 +1,7 @@
-/* global chrome */
-
 import React from 'react';
 
-import { Button, Grid, List, ListItemText, Typography } from '@material-ui/core';
+import { Grid, List, ListItemText } from '@material-ui/core';
 import { ClipLoader } from 'react-spinners';
-import InputList from './sub-components/inputList';
 import styles from '../styles';
 
 import IP from '../../IP';

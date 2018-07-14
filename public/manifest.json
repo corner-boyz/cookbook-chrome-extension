@@ -20,27 +20,36 @@
       "matches": ["<all_urls>"],
       "css": ["bootstrap.min.css"],
       "js": [ "jquery.min.js", "bootstrap.min.js", "content.js"],
-      "run_at": "document_end"
+      "exclude_globs": [
+        "https://www.facebook.com/*",
+        "https://twitter.com/*",
+        "https://www.instagram.com/*",
+        "https://www.reddit.com/*",
+        "https://www.google.com/*",
+        "https://www.youtube.com/*",
+        "https://www.hulu.com/*",
+        "https://www.netflix.com/*",
+        "https://mail.google.com/*",
+        "https://en.wikipedia.org/*",
+        "https://github.com/*",
+        "https://stackoverflow.com/*",
+        "https://www.yahoo.com/*",
+        "https://www.ebay.com/*",
+        "https://www.amazon.com/*"
+      ]
     }
   ],
   "background": {
     "scripts": ["background.js"],
     "persistent": false
   },
-  "version": "1.0.4",
+  "version": "1.0.5",
   "permissions": [
     "http://cookbookserver.herokuapp.com/*",
-    "http://*/*",
-    "https://*/*",
-    "http://*/",
-    "https://*/",
-    "<all_urls>",
+    "https://cookbookserver.herokuapp.com/*",
     "contextMenus",
     "storage",
     "tabs"
   ],
-  "web_accessible_resources" : [
-    "http://cookbookserver.herokuapp.com/*",
-    "*.html"
-]
+  "web_accessible_resources" : ["*.html"]
 }

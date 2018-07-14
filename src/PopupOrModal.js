@@ -2,7 +2,7 @@
 
 import React from 'react';
 import App from './App';
-import Recipe from './client-components/tabs/recipe';
+import Selected from './client-components/tabs/selected';
 import { ClipLoader } from 'react-spinners';
 
 import { MuiThemeProvider } from '@material-ui/core/styles';
@@ -21,6 +21,9 @@ class PopupOrModal extends React.Component {
     this.changeTheme = this.changeTheme.bind(this);
   }
 
+  /* Since this is the top-level component for both the pop-up (top-right corner) 
+     and the modal (right-click), upon mounting it must determine which view the
+     user wants to see by checking a boolean stored on their browser */
   componentDidMount() {
     chrome.storage.sync.get(['cbIsModal'], result => {
       if (result.cbIsModal) {
@@ -59,8 +62,6 @@ class PopupOrModal extends React.Component {
     }
   }
   
-
-  
   render() {
     if (this.state.isLoading) {
       return  <div style={{ width: "20%", margin: "auto" }}>
@@ -71,7 +72,7 @@ class PopupOrModal extends React.Component {
               /></div></div>
     } else {
       if (this.state.isModal) {
-        return <MuiThemeProvider theme={Themes.PantryTheme}><Recipe/></MuiThemeProvider>;
+        return <MuiThemeProvider theme={Themes.PantryTheme}><Selected /></MuiThemeProvider>;
       } else {
         return <MuiThemeProvider theme={this.state.theme}>
                 <App changeTheme={this.changeTheme}/>

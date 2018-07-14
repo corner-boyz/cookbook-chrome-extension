@@ -1,5 +1,3 @@
-/* global chrome */
-
 import React from 'react';
 
 import { Button, List, ListItemText, Typography } from '@material-ui/core';
@@ -11,7 +9,7 @@ import IP from '../../IP';
 import axios from 'axios';
 
 //==================================================== 
-class Ingredients extends React.Component {
+class Pantry extends React.Component {
   constructor(props) {
     super(props);
     
@@ -125,4 +123,4 @@ class Ingredients extends React.Component {
     }
   }
 
-export default Ingredients;
+export default Pantry;

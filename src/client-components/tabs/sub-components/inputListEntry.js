@@ -1,13 +1,8 @@
-/* global chrome */
-
 import React from 'react';
 
 import { Grid, TextField, Menu, MenuItem, IconButton } from '@material-ui/core';
 import { Delete }from '@material-ui/icons';
 import styles from '../../styles';
-
-import IP from '../../../IP';
-import axios from 'axios';
 
 //==================================================== 
 class InputListEntry extends React.Component {
@@ -59,7 +54,7 @@ class InputListEntry extends React.Component {
   };
 
   handleKeyDown = (e) => {
-    if(e.keyCode == 13 && e.shiftKey == false) {
+    if(e.keyCode === 13 && e.shiftKey === false) {
       e.preventDefault();
       this.props.submitUnparsed();
     }
@@ -89,7 +84,7 @@ class InputListEntry extends React.Component {
 
   handleUnparsed = (e) => {
     let code = e.keyCode || e.which;
-    if (code == 13) { 
+    if (code === 13) { 
       this.props.submitUnparsed();
     } else {
       this.setState({
