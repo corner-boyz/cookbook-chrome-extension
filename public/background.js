@@ -35,11 +35,11 @@ chrome.contextMenus.onClicked.addListener(clickData => {
            });
     } else if (clickData.menuItemId === 'Save Recipe') {
         chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, (tabs) => {
-            let url = tabs[0].url;
-            let title = tabs[0].title;
+            const url = tabs[0].url;
+            const title = tabs[0].title;
 
-            let http = new XMLHttpRequest();
-            let serverURL = 'http://cookbookserver.herokuapp.com/api/saverecipe';
+            const http = new XMLHttpRequest();
+            const serverURL = 'http://cookbookserver.herokuapp.com/api/saverecipe';
             http.open('POST', serverURL, true);
             http.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
             

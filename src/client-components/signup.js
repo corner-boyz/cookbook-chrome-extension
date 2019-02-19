@@ -41,9 +41,9 @@ class Signup extends React.Component {
   }
 
   submitSignup() {
-    let noEmail = this.state.email.indexOf('@') === -1;
-    let notMatching = this.state.password !== this.state.confirmedPassword;
-    let tooShort = this.state.password.length < 6;
+    const noEmail = this.state.email.indexOf('@') === -1;
+    const notMatching = this.state.password !== this.state.confirmedPassword;
+    const tooShort = this.state.password.length < 6;
     this.setState({
         noEmail: noEmail,
         notMatching: notMatching,
@@ -55,9 +55,7 @@ class Signup extends React.Component {
             password: this.state.password,
             name: this.state.name,
           })
-          .then(() => {
-            this.redirectToLogin();
-          }).catch(error => {
+          .then(this.redirectToLogin).catch(error => {
             alert(`Could not create a new Flex Chef account for the email ${this.state.email}. Please try again.`);
             console.log('Error in creating new user:', error);
           });

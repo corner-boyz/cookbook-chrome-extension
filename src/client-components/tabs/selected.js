@@ -195,7 +195,7 @@ class Selected extends React.Component {
 
   //====================================================
   render() {
-    let selectedScreen = this.state.editing ? 
+    const selectedScreen = this.state.editing ? 
       (<div style={styles.container}>
         <List style={{ textAlign: 'center' }}>
           <ListItemText primary='Ingredients Needed:' style={{ textAlign: 'center' }}/>
